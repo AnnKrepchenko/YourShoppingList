@@ -24,6 +24,7 @@
     <string name="alert_dialog_add_title">Add new item</string>
     <string name="alert_dialog_add_mess">Input new item\'s name</string>
     <string name="alert_error_name_symbols">Can\'t start with special symbols</string>
+    <string name="alert_error_name_exist">Good already exists</string>
     <string name="alert_dialog_button_save">Save</string>
     <string name="alert_dialog_button_delete">Delete</string>
     <string name="alert_dialog_button_cancel">Cancel</string>

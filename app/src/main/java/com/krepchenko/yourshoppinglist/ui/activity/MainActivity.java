@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
@@ -72,7 +74,16 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, 0, 0);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerview = navigationView.getHeaderView(0);
+        LinearLayout header = (LinearLayout) headerview.findViewById(R.id.header);
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setSnackBar(v,"Ну не работает, че тыкать то??",null);
+            }
+        });
         navigationView.setNavigationItemSelectedListener(this);
         if (savedInstanceState != null) {
             selectDrawerItem(navigationView.getMenu().getItem(savedInstanceState.getInt(KEY_ITEM)));
@@ -145,6 +156,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    protected void setSnackBar(View view, String text, String action) {
+        Snackbar.make(view, text, Snackbar.LENGTH_LONG)
+                .setAction(action, null).show();
+    }
+
     @Override
     public void onClick(View v) {
         switch (selectedItem) {
@@ -188,6 +204,7 @@ public class MainActivity extends AppCompatActivity
         final View view_np = View.inflate(this, R.layout.dialog_fragment_np, null);
         final EditText input = (EditText) view_et.findViewById(R.id.et_dialog);
         final TextInputLayout til_dialog = (TextInputLayout)view_et.findViewById(R.id.til_dialog);
+        til_dialog.setErrorEnabled(false);
         final NumberPicker nPicker = (NumberPicker) view_np.findViewById(R.id.number_picker);
         switch (which) {
             case DELETE: {
@@ -255,12 +272,16 @@ public class MainActivity extends AppCompatActivity
                             public void onClick(View view) {
                                 ContentValues good = new ContentValues();
                                 String name = input.getText().toString();
-                                if (TextUtils.checkNameForStartSpecSymbols(name)) {
-                                    good.put(GoodsEntity.NAME, input.getText().toString());
-                                    Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, Uri.encode(Long.toString(goodId)));
-                                    getContentResolver().update(uri, good, null, null);
-                                    cleanSaving();
-                                    alertDialog1.dismiss();
+                                if (TextUtils.checkNameForStartSpecSymbols(name) ) {
+                                    if(!checkGoodExist(name)) {
+                                        good.put(GoodsEntity.NAME, input.getText().toString());
+                                        Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, Uri.encode(Long.toString(goodId)));
+                                        getContentResolver().update(uri, good, null, null);
+                                        cleanSaving();
+                                        alertDialog1.dismiss();
+                                    }else{
+                                        til_dialog.setError(getString(R.string.alert_error_name_exist));
+                                    }
                                 } else {
                                     til_dialog.setError(getString(R.string.alert_error_name_symbols));
                                 }
@@ -295,13 +316,17 @@ public class MainActivity extends AppCompatActivity
                                 ContentValues good = new ContentValues();
                                 String name = input.getText().toString();
                                 if (TextUtils.checkNameForStartSpecSymbols(name)) {
-                                    good.put(GoodsEntity.NAME, name);
-                                    good.put(GoodsEntity.STATUS, GoodsEntity.Status.GENERAL.toString());
-                                    good.put(GoodsEntity.POPULARITY, 0);
-                                    good.put(GoodsEntity.DATE_LAST_BOUGHT, "");
-                                    getContentResolver().insert(GoodsEntity.CONTENT_URI, good);
-                                    cleanSaving();
-                                    alertDialog1.dismiss();
+                                    if(!checkGoodExist(name)) {
+                                        good.put(GoodsEntity.NAME, name);
+                                        good.put(GoodsEntity.STATUS, GoodsEntity.Status.GENERAL.toString());
+                                        good.put(GoodsEntity.POPULARITY, 0);
+                                        good.put(GoodsEntity.DATE_LAST_BOUGHT, "");
+                                        getContentResolver().insert(GoodsEntity.CONTENT_URI, good);
+                                        cleanSaving();
+                                        alertDialog1.dismiss();
+                                    }else{
+                                        til_dialog.setError(getString(R.string.alert_error_name_exist));
+                                    }
                                 } else {
                                     til_dialog.setError(getString(R.string.alert_error_name_symbols));
                                 }
@@ -339,7 +364,11 @@ public class MainActivity extends AppCompatActivity
             default:
                 break;
         }
+    }
 
+    private boolean checkGoodExist(String goodName){
+        Cursor cursor = getContentResolver().query(GoodsEntity.CONTENT_URI,null,GoodsEntity.NAME + "=?", new String[]{goodName},null);
+        return  cursor.moveToFirst();
     }
 
     private void sendMyList() {

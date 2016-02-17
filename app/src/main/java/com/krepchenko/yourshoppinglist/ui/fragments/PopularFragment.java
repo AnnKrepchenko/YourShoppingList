@@ -37,19 +37,8 @@ public class PopularFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int avg = 0, max = 0;
-        Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, UriSegment.avg_popular.toString());
-        Cursor cursor = getActivity().getContentResolver().query(uri, null,null,null,null);
-        if(cursor.moveToNext()){
-            avg = cursor.getInt(cursor.getColumnIndex("AVG(" + GoodsEntity.POPULARITY + ")"));
-        }
-        cursor.close();
-        uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, UriSegment.max_popular.toString());
-        cursor = getActivity().getContentResolver().query(uri, null,null,null,null);
-        if(cursor.moveToNext()){
-            max = cursor.getInt(cursor.getColumnIndex("MAX(" + GoodsEntity.POPULARITY + ")"));
-        }
-        cursor.close();
+        int max = qeury(UriSegment.max_popular.toString(),"MAX");
+        int avg = qeury(UriSegment.avg_popular.toString(),"AVG");
         adapter = new PopularGoodsCursorAdapter(getActivity(), (max -avg) / 5, max);
         Log.e("step", (max -avg) / 5 +"  "+ max);
         setHasOptionsMenu(true);
@@ -90,6 +79,17 @@ public class PopularFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         listView.setAdapter(adapter);
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    private int qeury(String pathSegment, String columnSuffix){
+        int result = 0;
+        Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, pathSegment);
+        Cursor cursor = getActivity().getContentResolver().query(uri, null,null,null,null);
+        if(cursor.moveToNext()){
+            result = cursor.getInt(cursor.getColumnIndex(columnSuffix+"(" + GoodsEntity.POPULARITY + ")"));
+        }
+        cursor.close();
+        return result;
     }
 
     @Override

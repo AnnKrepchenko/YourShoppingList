@@ -37,10 +37,6 @@ public class PopularGoodsCursorAdapter extends BaseCursorAdapter {
         RatingBar rb_rating;
     }
 
-    public void setValues(){
-
-    }
-
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder holder = (ViewHolder) view.getTag();

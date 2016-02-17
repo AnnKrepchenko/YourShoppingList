@@ -1,6 +1,7 @@
 package com.krepchenko.yourshoppinglist.ui.fragments;
 
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.FilterQueryProvider;
 import android.widget.SearchView;
@@ -109,6 +111,7 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
 
                 @Override
                 public boolean onQueryTextSubmit(String query) {
+                    hideKeyboard(getActivity());
                     return true;
                 }
             });
@@ -119,6 +122,15 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
         item.setActionView(mSearchview);
         super.onCreateOptionsMenu(menu, inflater);
 
+    }
+
+    private static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
