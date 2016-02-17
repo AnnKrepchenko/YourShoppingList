@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="application_name">Your Shopping List</string>
+    <string name="fragment_name_pop">Popular</string>
+    <string name="fragment_name_pop_short"></string>
+    <string name="fragment_name_all_goods">All goods</string>
+    <string name="fragment_name_my_list">My List</string>
+    <string name="communication_section">Communicate</string>
+
+    <string name="empty_fragment_my_list">No selected goods</string>
+    <string name="empty_fragment_popular">Start work with app to get popular goods</string>
+
+    <string name="hint_add_good">Input good you want to add in search string</string>
+    <string name="tmp_good_name">Good</string>
+    <string name="button_desc">Button to change status</string>
+
+    <string name="context_menu_delete">Delete</string>
+    <string name="context_menu_edit">Edit</string>
+    <string name="context_menu_set_number">Set number</string>
+    <string name="context_menu_clean_popular">Clean popular</string>
+
+    <string name="btn_add">Add item</string>
+    <string name="alert_dialog_add_title">Add new item</string>
+    <string name="alert_dialog_add_mess">Input new item\'s name</string>
+    <string name="alert_error_name_symbols">Can\'t start with special symbols</string>
+    <string name="alert_dialog_button_save">Save</string>
+    <string name="alert_dialog_button_delete">Delete</string>
+    <string name="alert_dialog_button_cancel">Cancel</string>
+    <string name="alert_dialog_button_add_to_mylist">Add to MyList</string>
+    <string name="dialog_fr_edit_title">Edit</string>
+    <string name="dialog_fr_set_number_title">Set number</string>
+    <string name="alert_dialog_edit_mess">Item\'s name</string>
+    <string name="alert_dialog_del_title">Delete item</string>
+    <string name="alert_dialog_del_mess">Are You sure You want to delete\u0020</string>
+    <string name="alert_dialog_buy_title">Buy item</string>
+    <string name="alert_dialog_buy_mess">\u0020 have been bought today.Are You sure You need it again?</string>
+
+    <string name="menu_item_send">Send list</string>
+    <string name="menu_item_delete_all">Clean all bought</string>
+    <string name="action_menu_delete_all">Delete all</string>
+    <string name="action_menu_send">Send</string>
+    <string name="action_menu_overflow">Menu overflow</string>
+    <string name="action_menu_search">Search</string>
+
+    <string name="send_my_list">Share My List</string>
+    <string name="send_my_list_start_str">To buy:\u0020</string>
+    <string name="send_my_list_empty">Nothing to buy</string>
+
+
+    <string name="notification_goods_remaining">\u0020 good(s) remaining</string>
+    <string name="notification_shopping_finished">We finished our shopping</string>
+
+
+    <string name="toast_list_cleaned">Shopping list is clean</string>
+    <string name="toast_item_add">\u0020 have added to MyList</string>
+    <string name="toast_goodname_incorrect">Incorrect name. Input another</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+</resources>
