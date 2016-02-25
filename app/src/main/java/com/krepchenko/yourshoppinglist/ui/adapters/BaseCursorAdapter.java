@@ -46,4 +46,6 @@ public abstract class BaseCursorAdapter extends CursorAdapter {
         notifyDataSetChanged();
     }
 
+    abstract public void setScope( int step, int max);
+
 }

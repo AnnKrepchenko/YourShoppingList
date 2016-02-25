@@ -6,15 +6,18 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.FilterQueryProvider;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 import com.krepchenko.yourshoppinglist.R;
 import com.krepchenko.yourshoppinglist.db.GoodsEntity;
 import com.krepchenko.yourshoppinglist.ui.activity.MainActivity;
+import com.krepchenko.yourshoppinglist.ui.adapters.AllGoodsCursorAdapter;
 import com.krepchenko.yourshoppinglist.ui.adapters.GoodsCursorAdapter;
 import com.krepchenko.yourshoppinglist.utils.ContextAlert;
 
@@ -39,11 +43,12 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
     private String mSearchText = "";
     private SearchView mSearchview;
     private static final String KEY_SAVE_SEARCH_TEXT = "search_text";
+    private AllGoodsCursorAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new GoodsCursorAdapter(getActivity());
+        adapter = new AllGoodsCursorAdapter(getActivity(),false);
         setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             mSearchText = savedInstanceState.getString(KEY_SAVE_SEARCH_TEXT);
@@ -82,6 +87,11 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
     }
 
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_simple_listview, container, false);
+    }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -149,8 +159,7 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
                     ((MainActivity)getActivity()).showAlert(ContextAlert.SURE_BUY, id, goodName);
                 } else {
                     good.put(GoodsEntity.STATUS, GoodsEntity.Status.TOBUY.toString());
-                    Toast.makeText(getActivity(), cursor.getString(cursor.getColumnIndex(GoodsEntity.NAME)) + getString(R.string.toast_item_add),
-                            Toast.LENGTH_SHORT).show();
+                    setSnackBar(view,cursor.getString(cursor.getColumnIndex(GoodsEntity.NAME)) + getString(R.string.toast_item_add),null);
                 }
             } else if (status.equals(GoodsEntity.Status.TOBUY.toString())) {
                 good.put(GoodsEntity.STATUS, GoodsEntity.Status.GENERAL.toString());
@@ -181,7 +190,13 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
             selection = GoodsEntity.NAME + " LIKE ?" +" OR " +GoodsEntity.NAME+ " LIKE ?";
             selectionArgs = new String[]{"%"+ mSearchText+"%","%"+Character.toUpperCase(mSearchText.charAt(0)) + mSearchText.substring(1) + "%"};
         }
-        return new CursorLoader(getActivity(), GoodsEntity.CONTENT_URI, null, selection,selectionArgs, GoodsEntity.NAME + " COLLATE LOCALIZED ASC");
+        return new CursorLoader(getActivity(), GoodsEntity.CONTENT_URI, null, selection,selectionArgs, GoodsEntity.CATEGORY_ID);
+    }
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        adapter.swapCursor(data);
     }
 
+    public void onLoaderReset(Loader<Cursor> loader) {
+        adapter.swapCursor(null);
+    }
 }

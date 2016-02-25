@@ -2,32 +2,46 @@ package com.krepchenko.yourshoppinglist.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.monxalo.android.widget.SectionCursorAdapter;
 import com.krepchenko.yourshoppinglist.R;
 import com.krepchenko.yourshoppinglist.db.GoodsEntity;
 
-public class GoodsCursorAdapter extends BaseCursorAdapter {
+/**
+ * Created by Ann on 25.02.2016.
+ */
+public class AllGoodsCursorAdapter extends SectionCursorAdapter {
 
     private boolean showNum;
+    protected int mSelection = -1;
 
-    public GoodsCursorAdapter(Context context, boolean showNum) {
-        super(context);
+    protected Context context;
+    private String[] categories;
+    protected final LayoutInflater inflater;
+
+
+    public AllGoodsCursorAdapter(Context context, boolean showNum) {
+        super(context, null, android.R.layout.preference_category, 2);
         this.showNum = showNum;
-    }
-
-    @Override
-    public void setScope(int step, int max) {
-
+        categories = context.getResources().getStringArray(R.array.categories);
+        this.context = context;
+        inflater = LayoutInflater.from(context);
     }
 
     private class ViewHolder {
         TextView tv_name;
         TextView tv_number;
         ImageView iv_status;
+    }
+
+    @Override
+    protected String getCustomGroup(String groupData) {
+        return categories[Integer.parseInt(groupData)];
     }
 
     @Override
@@ -69,6 +83,28 @@ public class GoodsCursorAdapter extends BaseCursorAdapter {
         }
         result.setTag(holder);
         return result;
+    }
+
+    public void setNewSelection(int position) {
+        mSelection = position;
+        notifyDataSetChanged();
+    }
+
+    public Integer getCurrentCheckedPosition() {
+        return mSelection;
+    }
+
+    public String getCurrentString(long id) {
+        Cursor cursor = context.getContentResolver().query(GoodsEntity.CONTENT_URI, new String[]{GoodsEntity.NAME}, GoodsEntity._ID + "=?", new String[]{Long.toString(id)}, null);
+        if (cursor.moveToFirst()) {
+            return cursor.getString(cursor.getColumnIndex(GoodsEntity.NAME));
+        }
+        return "";
+    }
+
+    public void clearSelection() {
+        mSelection = -1;
+        notifyDataSetChanged();
     }
 
 }

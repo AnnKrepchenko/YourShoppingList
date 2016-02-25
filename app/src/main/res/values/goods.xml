@@ -1,82 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="bread">Bread</string>
-    <string name="loaf">Loaf</string>
-    <string name="cookies">Cookies</string>
-    <string name="milk">Milk</string>
-    <string name="kefir">Kefir</string>
-    <string name="sour_cream">Sour cream</string>
-    <string name="oil">Oil</string>
-    <string name="curds">Curds</string>
-    <string name="cheese">Cheese</string>
-    <string name="cream_cheese">Cream cheese</string>
-    <string name="mayonnaise">Mayonnaise</string>
-    <string name="ketchup">Ketchup</string>
-    <string name="cream">Cream</string>
-    <string name="yogurt">Yogurt</string>
-    <string name="eggs">Eggs</string>
-    <string name="pasta">Pasta</string>
-    <string name="figure">Figure</string>
-    <string name="buckwheat">Buckwheat</string>
-    <string name="millet_groats">Millet groats</string>
-    <string name="oatmeat">Oatmeat</string>
-    <string name="flour">Flour</string>
-    <string name="black_tea">Black tea</string>
-    <string name="green_tea">Green tea</string>
-    <string name="coffee">Coffee</string>
-    <string name="sugar">Sugar</string>
-    <string name="fructose">Fructose</string>
-    <string name="potatoes">Potatoes</string>
-    <string name="carrots">Carrots</string>
-    <string name="beet">Beet</string>
-    <string name="onion">Onion</string>
-    <string name="garlic">Garlic</string>
-    <string name="cabbage">Cabbage</string>
-    <string name="broccoli">Broccoli</string>
-    <string name="cauliflower">Cauliflower</string>
-    <string name="dill">Dill</string>
-    <string name="parsley">Parsley</string>
-    <string name="basil">Basil</string>
-    <string name="turnip">Turnip</string>
-    <string name="pumpkin">Pumpkin</string>
-    <string name="tomatoes">Tomatoes</string>
-    <string name="cucumbers">Cucumbers</string>
-    <string name="paprica">Paprica</string>
-    <string name="apples">Apples</string>
-    <string name="oranges">Oranges</string>
-    <string name="mandarines">Mandarines</string>
-    <string name="bananas">Bananas</string>
-    <string name="pears">Pears</string>
-    <string name="grapes">Grapes</string>
-    <string name="garnet">Garnet</string>
-    <string name="persimmon">Persimmon</string>
-    <string name="plum">Plum</string>
-    <string name="peaches">Peaches</string>
-    <string name="nuts">Nuts</string>
-    <string name="dried_apricots">Dried apricots</string>
-    <string name="raisins">Raisins</string>
-    <string name="prunes">Prunes</string>
-    <string name="juice">Juice</string>
-    <string name="pork">Pork</string>
-    <string name="beef">Beef</string>
-    <string name="chicken">Chicken</string>
-    <string name="minced">Minced</string>
-    <string name="liver">Liver</string>
-    <string name="tongue">Tongue</string>
-    <string name="salami">Salami</string>
-    <string name="ham">Ham</string>
-    <string name="sausages">Sauseges</string>
-    <string name="fish">Fish</string>
-    <string name="herring">Herring</string>
-    <string name="crab_sticks">Crab sticks</string>
-    <string name="dumplings">Dumplings</string>
-    <string name="peas">Peas</string>
-    <string name="canned_corn">Canned corn</string>
-    <string name="beans">Beans</string>
-    <string name="champignons">Champignons</string>
-    <string name="stew">Stew</string>
-    <string name="tomato_paste">Tomato paste</string>
-    <string name="soy_sause">Soy sause</string>
-    <string name="salt">Salt</string>
-    <string name="pepper">Pepper</string>
+
+    <string-array name="food">
+        <item>Basil</item>
+        <item>Eggplant</item>
+        <item>Batata</item>
+        <item>Broccoli</item>
+        <item>Swede</item>
+        <item>Brussels sprouts</item>
+        <item>Peas</item>
+        <item>Squash</item>
+        <item>Cabbage</item>
+        <item>Potatoes</item>
+        <item>Lettuce</item>
+        <item>Onion</item>
+        <item>Carrot</item>
+        <item>Cucumber</item>
+        <item>Olives</item>
+        <item>Paprica</item>
+        <item>Pepper</item>
+        <item>Parsley</item>
+        <item>Radish</item>
+        <item>Arugula</item>
+        <item>Salad leaf</item>
+        <item>Beet</item>
+        <item>Celery</item>
+        <item>Asparagus</item>
+        <item>Tomato</item>
+        <item>Pumpkin</item>
+        <item>Dill</item>
+        <item>Bean</item>
+        <item>Garlic</item>
+        <item>Spinach</item>
+        <item>Apricot</item>
+        <item>Avocado</item>
+        <item>Quince</item>
+        <item>Pineapple</item>
+        <item>Orange</item>
+        <item>Watermelon</item>
+        <item>Bananas</item>
+        <item>Brazil nuts</item>
+        <item>Grapes</item>
+        <item>Cherry</item>
+        <item>Pomegranate</item>
+        <item>Grapefruit</item>
+        <item>Pear</item>
+        <item>Guarana</item>
+        <item>Melon</item>
+        <item>Figs</item>
+        <item>Kiwi</item>
+        <item>Coconut</item>
+        <item>Lime</item>
+        <item>Lemon</item>
+        <item>Lichee</item>
+        <item>Mango</item>
+        <item>Tangerine</item>
+        <item>Passionfruit</item>
+        <item>Nectarine</item>
+        <item>Peach</item>
+        <item>Pomelo</item>
+        <item>Sweetie</item>
+        <item>Plum</item>
+        <item>Persimmon</item>
+        <item>Feijoa</item>
+        <item>Sweat cherry</item>
+        <item>Chile</item>
+        <item>Apple</item>
+        <item>Mushrooms</item>
+        <item>Ginger</item>
+        <item>Peanuts</item>
+        <item>Sesame</item>
+        <item>Almonds</item>
+        <item>Raisins</item>
+        <item>Cashew</item>
+        <item>Hazelnut</item>
+        <item>Bread</item>
+        <item>Yogurt</item>
+        <item>Kefir</item>
+        <item>Butter</item>
+        <item>Margarine</item>
+        <item>Sour cream</item>
+        <item>Ice cream</item>
+        <item>Cheese</item>
+        <item>Cottage cheese</item>
+        <item>Sausage</item>
+        <item>Bacon</item>
+        <item>Ham</item>
+        <item>Frankfurters</item>
+        <item>Eggs</item>
+        <item>Chicken</item>
+        <item>Pork</item>
+        <item>Beef</item>
+        <item>Turkey</item>
+        <item>Goose</item>
+        <item>Sunflower oil</item>
+        <item>Olive oil</item>
+        <item>Ketchup</item>
+        <item>Mayonnaise</item>
+        <item>Flour</item>
+        <item>Yeast</item>
+        <item>Syrup</item>
+        <item>Topping</item>
+        <item>Jam</item>
+        <item>Vermicelli</item>
+        <item>Spaghetti</item>
+        <item>Rice</item>
+        <item>Buckwheat</item>
+        <item>Oatmeal</item>
+        <item>Muesli</item>
+        <item>Salt</item>
+        <item>Sugar</item>
+        <item>Instant coffee</item>
+        <item>Coffee beans</item>
+        <item>Ground coffee</item>
+        <item>Black tea</item>
+        <item>Green tea</item>
+        <item>Fruit tea</item>
+        <item>Alcohol</item>
+        <item>Water</item>
+        <item>Soda</item>
+        <item>Mineral water</item>
+        <item>Juice</item>
+        <item>Salmon</item>
+        <item>Trout</item>
+        <item>Pollock</item>
+        <item>Shrimps</item>
+        <item>Crab sticks</item>
+        <item>Squid</item>
+        <item>Chips</item>
+
+    </string-array>
+
+    <string-array name="personal_hygiene">
+        <item>Toothpaste</item>
+        <item>Shampoo</item>
+        <item>Hair conditioner</item>
+        <item>Toothbrush</item>
+        <item>Cotton pads (sponges)</item>
+        <item>Cotton buds</item>
+        <item>Shower gel</item>
+        <item>Soap</item>
+        <item>Mouthwash</item>
+        <item>Dental floss</item>
+    </string-array>
+
+    <string-array name="household_products">
+        <item>Air freshener</item>
+        <item>Bleach</item>
+        <item>Washing powder</item>
+        <item>Conditioner for linen</item>
+        <item>Remover</item>
+        <item>Water softener</item>
+        <item>Toilet paper</item>
+        <item>Kitchen towels</item>
+        <item>Garbage bags</item>
+        <item>Gloves</item>
+        <item>All-purpose cleaners</item>
+        <item>Dishwashing detergents</item>
+        <item>Washing machines detergents</item>
+    </string-array>
+
+    <string-array name="products_for_animals">
+        <item>Pet food</item>
+        <item>Vitamins for animals</item>
+        <item>Shampoo for pet</item>
+        <item>Bowl</item>
+        <item>Blade</item>
+        <item>Litter box</item>
+    </string-array>
+
+    <string-array name="other">
+        <item>Cigarettes</item>
+    </string-array>
 </resources>

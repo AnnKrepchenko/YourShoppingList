@@ -1,82 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="bread">Хлеб</string>
-    <string name="loaf">Батон</string>
-    <string name="cookies">Печенье</string>
-    <string name="milk">Молоко</string>
-    <string name="kefir">Кефир</string>
-    <string name="sour_cream">Сметана</string>
-    <string name="oil">Масло</string>
-    <string name="curds">Творог</string>
-    <string name="cheese">Сыр</string>
-    <string name="cream_cheese">Плавленый сыр</string>
-    <string name="mayonnaise">Майонез</string>
-    <string name="ketchup">Кетчуп</string>
-    <string name="cream">Сливки</string>
-    <string name="yogurt">Йогурт</string>
-    <string name="eggs">Яйца</string>
-    <string name="pasta">Макароны</string>
-    <string name="figure">Рис</string>
-    <string name="buckwheat">Гречка</string>
-    <string name="millet_groats">Пшенная крупа</string>
-    <string name="oatmeat">Овсянка</string>
-    <string name="flour">Мука</string>
-    <string name="black_tea">Черный чай</string>
-    <string name="green_tea">Зеленый чай</string>
-    <string name="coffee">Кофе</string>
-    <string name="sugar">Сахар</string>
-    <string name="fructose">Фруктоза</string>
-    <string name="potatoes">Картофель</string>
-    <string name="carrots">Морковь</string>
-    <string name="beet">Свекла</string>
-    <string name="onion">Лук</string>
-    <string name="garlic">Чеснок</string>
-    <string name="cabbage">Капуста</string>
-    <string name="broccoli">Броколли</string>
-    <string name="cauliflower">Цветная капуста</string>
-    <string name="dill">Укроп</string>
-    <string name="parsley">Петрушка</string>
-    <string name="basil">Базилик</string>
-    <string name="turnip">Репа</string>
-    <string name="pumpkin">Тыква</string>
-    <string name="tomatoes">Помидоры</string>
-    <string name="cucumbers">Огурцы</string>
-    <string name="paprica">Перец(паприка)</string>
-    <string name="apples">Яблоки</string>
-    <string name="oranges">Апельсины</string>
-    <string name="mandarines">Мандарины</string>
-    <string name="bananas">Бананы</string>
-    <string name="pears">Груши</string>
-    <string name="grapes">Виноград</string>
-    <string name="garnet">Гранат</string>
-    <string name="persimmon">Хурма</string>
-    <string name="plum">Сливы</string>
-    <string name="peaches">Персики</string>
-    <string name="nuts">Орехи</string>
-    <string name="dried_apricots">Курага</string>
-    <string name="raisins">Изюм</string>
-    <string name="prunes">Чернослив</string>
-    <string name="juice">Сок</string>
-    <string name="pork">Свинина</string>
-    <string name="beef">Говядина</string>
-    <string name="chicken">Курица</string>
-    <string name="minced">Фарш</string>
-    <string name="liver">Печень</string>
-    <string name="tongue">Язык</string>
-    <string name="salami">Колбаса</string>
-    <string name="ham">Ветчина</string>
-    <string name="sausages">Сосиски</string>
-    <string name="fish">Рыба</string>
-    <string name="herring">Сельдь</string>
-    <string name="crab_sticks">Крабовые палочки</string>
-    <string name="dumplings">Пельмени</string>
-    <string name="peas">Горошек</string>
-    <string name="canned_corn">Кукуруза</string>
-    <string name="beans">Фасоль</string>
-    <string name="champignons">Шампиньоны</string>
-    <string name="stew">Тушенка</string>
-    <string name="tomato_paste">Томатная паста</string>
-    <string name="soy_sause">Соевый соус</string>
-    <string name="salt">Соль</string>
-    <string name="pepper">Перец(специи)</string>
+
+    <string-array name="food">
+        <!--food-->
+        <item>Базилик</item>
+        <item>Баклажан</item>
+        <item>Батат</item>
+        <item>Брокколи</item>
+        <item>Брюква</item>
+        <item>Брюссельская капуста</item>
+        <item>Горох</item>
+        <item>Кабачок</item>
+        <item>Капуста</item>
+        <item>Картофель</item>
+        <item>Латук</item>
+        <item>Лук</item>
+        <item>Морковь</item>
+        <item>Огурец</item>
+        <item>Оливки</item>
+        <item>Перец сладкий</item>
+        <item>Перец (приправа)</item>
+        <item>Петрушка</item>
+        <item>Редис</item>
+        <item>Руккола</item>
+        <item>Салат листовой</item>
+        <item>Свекла</item>
+        <item>Сельдерей</item>
+        <item>Спаржа</item>
+        <item>Томат</item>
+        <item>Тыква</item>
+        <item>Укроп</item>
+        <item>Фасоль</item>
+        <item>Чеснок</item>
+        <item>Шпинат</item>
+        <item>Абрикос</item>
+        <item>Авокадо</item>
+        <item>Айва</item>
+        <item>Ананас</item>
+        <item>Апельсин</item>
+        <item>Арбуз</item>
+        <item>Бананы</item>
+        <item>Бразильский орех</item>
+        <item>Виноград</item>
+        <item>Вишня</item>
+        <item>Гранат</item>
+        <item>Грейпфрут</item>
+        <item>Груша</item>
+        <item>Гуарана</item>
+        <item>Дыня</item>
+        <item>Инжир</item>
+        <item>Киви</item>
+        <item>Кокос</item>
+        <item>Лайм</item>
+        <item>Лимон</item>
+        <item>Личи</item>
+        <item>Манго</item>
+        <item>Мандарин</item>
+        <item>Маракуйа</item>
+        <item>Нектарин</item>
+        <item>Персик</item>
+        <item>Помело</item>
+        <item>Свити</item>
+        <item>Слива</item>
+        <item>Хурма</item>
+        <item>Фейхоа</item>
+        <item>Черешня</item>
+        <item>Чили</item>
+        <item>Яблоко</item>
+        <item>Грибы</item>
+        <item>Имбирь</item>
+        <item>Арахис</item>
+        <item>Кунжут</item>
+        <item>Миндаль</item>
+        <item>Изюм</item>
+        <item>Кешью</item>
+        <item>Фундук</item>
+        <item>Хлеб</item>
+        <item>Йогурт</item>
+        <item>Кефир</item>
+        <item>Масло сливочное</item>
+        <item>Маргарин</item>
+        <item>Сметана</item>
+        <item>Мороженое</item>
+        <item>Сыр</item>
+        <item>Творог</item>
+        <item>Колбаса</item>
+        <item>Бекон</item>
+        <item>Ветчина</item>
+        <item>Сосиски</item>
+        <item>Яйца</item>
+        <item>Курятина</item>
+        <item>Свинина</item>
+        <item>Говядина</item>
+        <item>Индейка</item>
+        <item>Гусятина</item>
+        <item>Масло подсолнечное</item>
+        <item>Масло оливковое</item>
+        <item>Кетчуп</item>
+        <item>Майонез</item>
+        <item>Мука</item>
+        <item>Дрожжи</item>
+        <item>Сироп</item>
+        <item>Топпинг</item>
+        <item>Джем</item>
+        <item>Вермишель</item>
+        <item>Спагетти</item>
+        <item>Рис</item>
+        <item>Гречка</item>
+        <item>Овсянка</item>
+        <item>Мюсли</item>
+        <item>Соль </item>
+        <item>Сахар</item>
+        <item>Растворимый кофе</item>
+        <item>Кофе в зернах</item>
+        <item>Молотый кофе</item>
+        <item>Черный чай</item>
+        <item>Зеленый чай</item>
+        <item>Фруктовый чай</item>
+        <item>Алкоголь</item>
+        <item>Вода</item>
+        <item>Газированая вода</item>
+        <item>Минеральная вода</item>
+        <item>Сок</item>
+        <item>Семга</item>
+        <item>Форельа</item>
+        <item>Сайда</item>
+        <item>Креветки</item>
+        <item>Крабовый палочки</item>
+        <item>Кальмар</item>
+        <item>Чипсы</item>
+
+    </string-array>
+
+    <string-array name="personal_hygiene">
+        <item>Зубная паста</item>
+        <item>Шампунь</item>
+        <item>Кондиционер для волос</item>
+        <item>Зубная щетка</item>
+        <item>Ватные диски(спонжики)</item>
+        <item>Ватные палочки</item>
+        <item>Гель для душа</item>
+        <item>Мыло</item>
+        <item>Ополаскиватель для полости рта</item>
+        <item>Зубная нить</item>
+    </string-array>
+
+    <string-array name="household_products">
+        <item>Освежитель воздуха</item>
+        <item>Отбеливатель</item>
+        <item>Стиральный порошок</item>
+        <item>Кондиционер для белья</item>
+        <item>Пятновыводитель</item>
+        <item>Средство для смягчения воды</item>
+        <item>Туалетная бумага</item>
+        <item>Кухонные полотенца</item>
+        <item>Мусорные пакеты</item>
+        <item>Перчатки</item>
+        <item>Салфетки</item>
+        <item>Очиститель универсальный</item>
+        <item>Средство для посудомоющих машин</item>
+        <item>Средство для стиральных машин</item>
+    </string-array>
+
+    <string-array name="products_for_animals">
+        <item>Корм для животных</item>
+        <item>Витамины для животных</item>
+        <item>Шампунь для питомца</item>
+        <item>Миска</item>
+        <item>Лопатка</item>
+        <item>Наполнитель для туалета</item>
+    </string-array>
+
+    <string-array name="other">
+        <item>Сигареты</item>
+    </string-array>
 </resources>

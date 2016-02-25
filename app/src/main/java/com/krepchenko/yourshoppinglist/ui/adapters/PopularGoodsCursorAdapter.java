@@ -16,19 +16,14 @@ import com.krepchenko.yourshoppinglist.db.GoodsEntity;
  */
 public class PopularGoodsCursorAdapter extends BaseCursorAdapter {
 
-    private int star5;
     private int star4;
     private int star3;
     private int star2;
     private int star1;
 
 
-    public PopularGoodsCursorAdapter(Context context, int step, int max) {
+    public PopularGoodsCursorAdapter(Context context) {
         super(context);
-        star4 = max-step;
-        star3 = star4-step;
-        star2 = star3-step;
-        star1 = star2- step;
     }
 
     private class ViewHolder {
@@ -87,4 +82,11 @@ public class PopularGoodsCursorAdapter extends BaseCursorAdapter {
         return stars;
     }
 
+    public void setScope( int step, int max){
+        star4 = max-step;
+        star3 = star4-step;
+        star2 = star3-step;
+        star1 = star2- step;
+        notifyDataSetChanged();
+    }
 }

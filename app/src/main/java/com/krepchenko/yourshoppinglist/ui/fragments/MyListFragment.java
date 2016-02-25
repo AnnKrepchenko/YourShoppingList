@@ -5,14 +5,18 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 
 import com.krepchenko.yourshoppinglist.R;
 import com.krepchenko.yourshoppinglist.db.GoodsEntity;
@@ -34,7 +38,7 @@ public class MyListFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new GoodsCursorAdapter(getActivity());
+        adapter = new GoodsCursorAdapter(getActivity(),true);
         callback = new ActionMode.Callback() {
 
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -64,9 +68,16 @@ public class MyListFragment extends BaseFragment {
         };
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_simple_listview, container, false);
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setEmptyText(R.string.empty_fragment_my_list);
         listView.setAdapter(adapter);
         getLoaderManager().initLoader(0, null, this);
     }

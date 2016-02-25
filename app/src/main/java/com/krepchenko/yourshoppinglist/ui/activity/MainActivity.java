@@ -40,19 +40,22 @@ import com.krepchenko.yourshoppinglist.ui.fragments.PopularFragment;
 import com.krepchenko.yourshoppinglist.utils.ContextAlert;
 import com.krepchenko.yourshoppinglist.utils.TextUtils;
 
+import java.util.Stack;
+
 import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private static String KEY_ITEM = "item";
+    private static String KEY_ID = "id";
+    private static String KEY_NAME = "name";
+    private static String KEY_ALERT = "alert";
+
     private FloatingActionButton fab;
     private NavigationView navigationView;
     private int selectedItem = 0;
 
-    private static String KEY_ID = "id";
-    private static String KEY_NAME = "name";
-    private static String KEY_ALERT = "alert";
 
     private long goodId;
     private String goodName;
@@ -166,6 +169,7 @@ public class MainActivity extends AppCompatActivity
         switch (selectedItem) {
             case 0:
                 cleanBought();
+                setSnackBar(v, getString(R.string.toast_list_cleaned), null);
                 break;
             case 1:
                 showAlert(ContextAlert.ADD, 0, null);
@@ -186,7 +190,6 @@ public class MainActivity extends AppCompatActivity
             cursor.moveToNext();
         }
         cursor.close();
-        Toast.makeText(MainActivity.this, R.string.toast_list_cleaned, Toast.LENGTH_SHORT).show();
     }
 
     private void cleanSaving() {
@@ -234,7 +237,7 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         ContentValues good = new ContentValues();
                         good.put(GoodsEntity.STATUS, GoodsEntity.Status.TOBUY.toString());
-                        Toast.makeText(MainActivity.this, goodName + getString(R.string.toast_item_add), Toast.LENGTH_SHORT).show();
+                        setSnackBar(getCurrentFocus(), goodName + getString(R.string.toast_item_add), null);
                         Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, Uri.encode(Long.toString(goodId)));
                         getContentResolver().update(uri, good, null, null);
                         setNotification(false);
@@ -273,8 +276,8 @@ public class MainActivity extends AppCompatActivity
                                 ContentValues good = new ContentValues();
                                 String name = input.getText().toString();
                                 if (TextUtils.checkNameForStartSpecSymbols(name) ) {
-                                    if(!checkGoodExist(name)) {
-                                        good.put(GoodsEntity.NAME, input.getText().toString());
+                                    if(!checkGoodExist(name,goodId)) {
+                                        good.put(GoodsEntity.NAME, name.trim());
                                         Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, Uri.encode(Long.toString(goodId)));
                                         getContentResolver().update(uri, good, null, null);
                                         cleanSaving();
@@ -316,8 +319,9 @@ public class MainActivity extends AppCompatActivity
                                 ContentValues good = new ContentValues();
                                 String name = input.getText().toString();
                                 if (TextUtils.checkNameForStartSpecSymbols(name)) {
-                                    if(!checkGoodExist(name)) {
-                                        good.put(GoodsEntity.NAME, name);
+                                    if(!checkGoodExist(name,-1)) {
+                                        good.put(GoodsEntity.NAME, name.trim());
+                                        good.put(GoodsEntity.CATEGORY_ID,0);
                                         good.put(GoodsEntity.STATUS, GoodsEntity.Status.GENERAL.toString());
                                         good.put(GoodsEntity.POPULARITY, 0);
                                         good.put(GoodsEntity.DATE_LAST_BOUGHT, "");
@@ -366,8 +370,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private boolean checkGoodExist(String goodName){
-        Cursor cursor = getContentResolver().query(GoodsEntity.CONTENT_URI,null,GoodsEntity.NAME + "=?", new String[]{goodName},null);
+    private boolean checkGoodExist(String goodName,long goodId){
+        goodName = goodName.trim();
+        Cursor cursor = getContentResolver().query(GoodsEntity.CONTENT_URI,null,"("+GoodsEntity.NAME + "=? OR "+ GoodsEntity.NAME + "=?) AND "+ GoodsEntity._ID + "<>?", new String[]{Character.toLowerCase(goodName.charAt(0)) + goodName.substring(1),Character.toUpperCase(goodName.charAt(0)) + goodName.substring(1),String.valueOf(goodId)},null);
         return  cursor.moveToFirst();
     }
 

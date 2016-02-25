@@ -4,8 +4,8 @@
     <string name="application_name">Ваш список покупок</string>
     <string name="fragment_name_pop">Популярные</string>
     <string name="fragment_name_pop_short">Популяр</string>
-	<string name="fragment_name_all_goods">Все</string>
-	<string name="fragment_name_my_list">Список</string>
+	<string name="fragment_name_all_goods">Все товары</string>
+	<string name="fragment_name_my_list">Мой список</string>
 	<string name="communication_section">Communicate</string>
 	
 	<string name="empty_fragment_my_list">Нет товаров для покупок</string>

@@ -35,6 +35,5 @@
         android:layout_marginRight="30dp"
         android:layout_marginTop="10dp"
         android:layout_toLeftOf="@id/good_check"
-        android:gravity="center_vertical"
-        android:text="@string/tmp_good_name" />
+        android:gravity="center_vertical"/>
 </RelativeLayout>

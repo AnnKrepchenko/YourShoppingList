@@ -3,7 +3,7 @@
     package="com.krepchenko.yourshoppinglist">
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application_name"
         android:supportsRtl="true"

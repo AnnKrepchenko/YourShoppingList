@@ -37,11 +37,17 @@ public class PopularFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int max = qeury(UriSegment.max_popular.toString(),"MAX");
-        int avg = qeury(UriSegment.avg_popular.toString(),"AVG");
-        adapter = new PopularGoodsCursorAdapter(getActivity(), (max -avg) / 5, max);
-        Log.e("step", (max -avg) / 5 +"  "+ max);
+        adapter = new PopularGoodsCursorAdapter(getActivity());
+        countScope();
         setHasOptionsMenu(true);
+    }
+
+
+    private void countScope() {
+        int max = query(UriSegment.max_popular.toString(), "MAX");
+        int avg = query(UriSegment.avg_popular.toString(), "AVG");
+        adapter.setScope((max - avg) / 5, max);
+        Log.e("step", (max - avg) / 5 + "  " + max);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -59,10 +65,9 @@ public class PopularFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_clean_popular:
-                Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, UriSegment.popular.toString());
                 ContentValues good = new ContentValues();
                 good.put(GoodsEntity.POPULARITY, 0);
-                getActivity().getContentResolver().update(uri, good, null, null);
+                getActivity().getContentResolver().update(GoodsEntity.CONTENT_URI, good, null, null);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -77,16 +82,17 @@ public class PopularFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setEmptyText(R.string.empty_fragment_popular);
         listView.setAdapter(adapter);
         getLoaderManager().initLoader(0, null, this);
     }
 
-    private int qeury(String pathSegment, String columnSuffix){
+    private int query(String pathSegment, String columnSuffix) {
         int result = 0;
         Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, pathSegment);
-        Cursor cursor = getActivity().getContentResolver().query(uri, null,null,null,null);
-        if(cursor.moveToNext()){
-            result = cursor.getInt(cursor.getColumnIndex(columnSuffix+"(" + GoodsEntity.POPULARITY + ")"));
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
+        if (cursor.moveToNext()) {
+            result = cursor.getInt(cursor.getColumnIndex(columnSuffix + "(" + GoodsEntity.POPULARITY + ")"));
         }
         cursor.close();
         return result;
@@ -120,6 +126,7 @@ public class PopularFragment extends BaseFragment {
         Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, Uri.encode(Long.toString(id)));
         getActivity().getContentResolver().update(uri, good, null, null);
         setNotification(false);
+        countScope();
     }
 
 
