@@ -15,11 +15,4 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/fragment_name_pop" />
     </group>
-    <group
-        android:id="@+id/share_section" android:checkableBehavior="none">
-        <item
-            android:id="@+id/nav_share"
-            android:icon="@drawable/ic_menu_share"
-            android:title="@string/send_my_list" />
-    </group>
 </menu>

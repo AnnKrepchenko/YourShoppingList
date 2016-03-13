@@ -22,35 +22,35 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(GoodsEntity.CREATE_SCRIPT);
         db.execSQL(CategoryEntity.CREATE_SCRIPT);
         String[] categories = context.getResources().getStringArray(R.array.categories);
+        String[] categoryColors = context.getResources().getStringArray(R.array.category_colors);
         String[] food = context.getResources().getStringArray(R.array.food);
         String[] personalHygiene = context.getResources().getStringArray(R.array.personal_hygiene);
         String[] pets = context.getResources().getStringArray(R.array.products_for_animals);
         String[] chem = context.getResources().getStringArray(R.array.household_products);
         String[] other = context.getResources().getStringArray(R.array.other);
-        int i = 0;
-        for (String categoryItem : categories) {
-            db.execSQL("INSERT INTO " + CategoryEntity.TABLE_NAME + " VALUES(" + i + ",'" + categoryItem + "')");
-            i++;
+        int i;
+        for (i=0;i<categories.length;i++) {
+            db.execSQL("INSERT INTO " + CategoryEntity.TABLE_NAME + " VALUES(" + i + ",'" + categories[i] + "','"+ categoryColors[i]+"')");
         }
-        i=0;
+        i = 0;
         for (String foodItem : food) {
-            insertItemScript(db, i, foodItem, 1);
+            insertItemScript(db, i, foodItem, 0);
             i++;
         }
         for (String personalHygieneItem : personalHygiene) {
-            insertItemScript(db, i, personalHygieneItem, 2);
+            insertItemScript(db, i, personalHygieneItem, 1);
             i++;
         }
         for (String chemItem : chem) {
-            insertItemScript(db, i, chemItem, 3);
+            insertItemScript(db, i, chemItem, 2);
             i++;
         }
         for (String petItem : pets) {
-            insertItemScript(db, i, petItem, 4);
+            insertItemScript(db, i, petItem, 3);
             i++;
         }
         for (String otherItem : other) {
-            insertItemScript(db, i, otherItem, 5);
+            insertItemScript(db, i, otherItem, 4);
             i++;
         }
     }

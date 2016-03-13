@@ -15,6 +15,11 @@
     <string name="tmp_good_name">Good</string>
     <string name="button_desc">Button to change status</string>
 
+    <string name="fab_add_good">Add good</string>
+    <string name="fab_add_category">Add category</string>
+    <string name="fab_send_list">Send My List</string>
+    <string name="fab_clean_bought">Clean bought</string>
+
     <string name="context_menu_delete">Delete</string>
     <string name="context_menu_edit">Edit</string>
     <string name="context_menu_set_number">Set number</string>
@@ -22,16 +27,22 @@
 
     <string name="btn_add">Add item</string>
     <string name="alert_dialog_add_title">Add new item</string>
+    <string name="alert_dialog_add_category_title">Add new category</string>
     <string name="alert_dialog_add_mess">Input new item\'s name</string>
+    <string name="alert_dialog_add_category_mess">Input new name of the category</string>
     <string name="alert_error_name_symbols">Can\'t start with special symbols</string>
-    <string name="alert_error_name_exist">Good already exists</string>
+    <string name="alert_error_name_good_exist">Good already exists</string>
+    <string name="alert_error_name_small">Name should contains at least 3 symbols</string>
+    <string name="alert_error_name_category_exist">Category already exists</string>
     <string name="alert_dialog_button_save">Save</string>
     <string name="alert_dialog_button_delete">Delete</string>
     <string name="alert_dialog_button_cancel">Cancel</string>
     <string name="alert_dialog_button_add_to_mylist">Add to MyList</string>
-    <string name="dialog_fr_edit_title">Edit</string>
+    <string name="dialog_fr_edit_good_title">Edit good</string>
+    <string name="dialog_fr_edit_category_title">Edit category</string>
     <string name="dialog_fr_set_number_title">Set number</string>
     <string name="alert_dialog_edit_mess">Item\'s name</string>
+    <string name="alert_dialog_edit_category_mess">Name of the category</string>
     <string name="alert_dialog_del_title">Delete item</string>
     <string name="alert_dialog_del_mess">Are You sure You want to delete\u0020</string>
     <string name="alert_dialog_buy_title">Buy item</string>

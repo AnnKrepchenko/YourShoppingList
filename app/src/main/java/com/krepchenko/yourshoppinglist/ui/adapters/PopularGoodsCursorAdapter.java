@@ -16,10 +16,8 @@ import com.krepchenko.yourshoppinglist.db.GoodsEntity;
  */
 public class PopularGoodsCursorAdapter extends BaseCursorAdapter {
 
-    private int star4;
-    private int star3;
-    private int star2;
-    private int star1;
+    private int avg;
+    private int step;
 
 
     public PopularGoodsCursorAdapter(Context context) {
@@ -46,11 +44,6 @@ public class PopularGoodsCursorAdapter extends BaseCursorAdapter {
             holder.iv_status.setBackgroundResource(R.drawable.bougth_icon);
         }
         holder.rb_rating.setRating(getRatingValue(cursor.getInt(cursor.getColumnIndex(GoodsEntity.POPULARITY))));
-        if (mSelection == cursor.getPosition()) {
-            view.setBackgroundColor(context.getResources().getColor(R.color.divider));
-        } else {
-            view.setBackgroundColor(context.getResources().getColor(android.R.color.background_light));
-        }
     }
 
     @Override
@@ -66,27 +59,12 @@ public class PopularGoodsCursorAdapter extends BaseCursorAdapter {
     }
 
     private float getRatingValue(int pop){
-        float stars = 1;
-        if(pop>star1){
-            stars++;
-            if(pop>star2){
-                stars++;
-                if(pop>star3){
-                    stars++;
-                    if(pop>star4){
-                        stars++;
-                    }
-                }
-            }
-        }
-        return stars;
+        return (pop-avg)/step;
     }
 
-    public void setScope( int step, int max){
-        star4 = max-step;
-        star3 = star4-step;
-        star2 = star3-step;
-        star1 = star2- step;
+    public void setScope( int step, int avg){
+        this.step = step>0 ? step : 1;
+        this.avg = avg;
         notifyDataSetChanged();
     }
 }

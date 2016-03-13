@@ -2,50 +2,89 @@ package com.krepchenko.yourshoppinglist.ui.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorTreeAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.monxalo.android.widget.SectionCursorAdapter;
 import com.krepchenko.yourshoppinglist.R;
+import com.krepchenko.yourshoppinglist.db.CategoryEntity;
 import com.krepchenko.yourshoppinglist.db.GoodsEntity;
+import com.krepchenko.yourshoppinglist.ui.fragments.AllGoodsFragment;
 
 /**
  * Created by Ann on 25.02.2016.
  */
-public class AllGoodsCursorAdapter extends SectionCursorAdapter {
+public class AllGoodsCursorAdapter extends CursorTreeAdapter {
 
-    private boolean showNum;
-    protected int mSelection = -1;
+    protected int selectionGroup = -1;
+    protected int selectionChild = -1;
 
     protected Context context;
-    private String[] categories;
     protected final LayoutInflater inflater;
+    private String filter = "";
 
-
-    public AllGoodsCursorAdapter(Context context, boolean showNum) {
-        super(context, null, android.R.layout.preference_category, 2);
-        this.showNum = showNum;
-        categories = context.getResources().getStringArray(R.array.categories);
+    public AllGoodsCursorAdapter(Context context, AllGoodsFragment fragment) {
+        super(null, context);
         this.context = context;
         inflater = LayoutInflater.from(context);
     }
 
+    @Override
+    protected Cursor getChildrenCursor(Cursor groupCursor) {
+        String selection = GoodsEntity.CATEGORY_ID + "=? AND (" + GoodsEntity.NAME + " LIKE ?" + " OR " + GoodsEntity.NAME + " LIKE ?)";
+        String[] selectionArgs = new String[]{groupCursor.getString(groupCursor.getColumnIndex(CategoryEntity._ID)),"%" + filter + "%",(filter.isEmpty()) ? "%" + filter + "%" : "%" + Character.toUpperCase(filter.charAt(0)) + filter.substring(1) + "%"};
+        Cursor cursor = context.getContentResolver().query(GoodsEntity.CONTENT_URI, null, selection, selectionArgs, GoodsEntity.NAME + " ASC");
+        return cursor;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        View v = super.getGroupView(groupPosition, isExpanded, convertView, parent);
+        ExpandableListView mExpandableListView = (ExpandableListView) parent;
+        if (!filter.isEmpty()) {
+            mExpandableListView.expandGroup(groupPosition);
+        }else {
+          //  mExpandableListView.collapseGroup(groupPosition);
+        }
+        return v;
+    }
+
+    @Override
+    public View newGroupView(Context context, Cursor cursor,
+                             boolean isExpanded, ViewGroup parent) {
+        final View view = inflater.inflate(R.layout.good, parent, false);
+        return view;
+    }
+
+    @Override
+    public void bindGroupView(View view, Context context, Cursor cursor,
+                              boolean isExpanded) {
+
+        TextView lblListHeader = (TextView) view
+                .findViewById(R.id.good_name);
+        if (selectionChild == -1 && selectionGroup == cursor.getPosition()) {
+            view.setBackgroundColor(context.getResources().getColor(R.color.accent));
+        } else {
+            view.setBackgroundColor(Color.parseColor(cursor.getString(cursor.getColumnIndex(CategoryEntity.COLOR))));
+        }
+        if (lblListHeader != null) {
+            lblListHeader.setText(cursor.getString(cursor
+                    .getColumnIndex(CategoryEntity.NAME)));
+        }
+    }
+
     private class ViewHolder {
         TextView tv_name;
-        TextView tv_number;
         ImageView iv_status;
     }
 
     @Override
-    protected String getCustomGroup(String groupData) {
-        return categories[Integer.parseInt(groupData)];
-    }
-
-    @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindChildView(View view, Context context, Cursor cursor, boolean isLastChild) {
         ViewHolder holder = (ViewHolder) view.getTag();
         int textColumn = cursor.getColumnIndex(GoodsEntity.NAME);
         holder.tv_name.setText(cursor.getString(textColumn));
@@ -57,54 +96,94 @@ public class AllGoodsCursorAdapter extends SectionCursorAdapter {
         } else if (status.equals(GoodsEntity.Status.BOUGHT.toString())) {
             holder.iv_status.setBackgroundResource(R.drawable.bougth_icon);
         }
-        if (mSelection == cursor.getPosition()) {
+        if (selectionChild == cursor.getPosition() && selectionGroup == getCursor().getPosition()) {
             view.setBackgroundColor(context.getResources().getColor(R.color.divider));
         } else {
-            view.setBackgroundColor(context.getResources().getColor(android.R.color.background_light));
-        }
-        if (showNum) {
-            int numberColumn = cursor.getColumnIndex(GoodsEntity.NUMBER);
-            if ((cursor.getInt(numberColumn)) == 0)
-                holder.tv_number.setText("");
-            else
-                holder.tv_number.setText(String.valueOf((cursor.getInt(numberColumn))));
+            view.setBackground(null);
         }
     }
 
     @Override
-    public View newView(Context context, final Cursor cursor, ViewGroup parent) {
+    public View newChildView(Context context, final Cursor cursor,
+                             boolean isLastChild, ViewGroup parent) {
         final ViewHolder holder = new ViewHolder();
         View result;
         result = inflater.inflate(R.layout.good, parent, false);
         holder.tv_name = (TextView) result.findViewById(R.id.good_name);
         holder.iv_status = (ImageView) result.findViewById(R.id.good_check);
-        if (showNum) {
-            holder.tv_number = (TextView) result.findViewById(R.id.good_number);
-        }
         result.setTag(holder);
         return result;
     }
 
-    public void setNewSelection(int position) {
-        mSelection = position;
+    public void setNewSelection(int positionGroup, int positionChild) {
+        selectionChild = positionChild;
+        selectionGroup = positionGroup;
         notifyDataSetChanged();
     }
 
-    public Integer getCurrentCheckedPosition() {
-        return mSelection;
+    public Integer getCurrentCheckedPositionChild() {
+        return selectionChild;
     }
 
-    public String getCurrentString(long id) {
-        Cursor cursor = context.getContentResolver().query(GoodsEntity.CONTENT_URI, new String[]{GoodsEntity.NAME}, GoodsEntity._ID + "=?", new String[]{Long.toString(id)}, null);
-        if (cursor.moveToFirst()) {
-            return cursor.getString(cursor.getColumnIndex(GoodsEntity.NAME));
-        }
-        return "";
+    public Integer getCurrentCheckedPositionGroup() {
+        return selectionGroup;
+    }
+
+    public String getCurrentName(int group, int child) {
+        return getChild(group, child).getString(getChild(group, child).getColumnIndex(GoodsEntity.NAME));
+    }
+
+    public long getCurrentChildId(int group, int child) {
+        return getChild(group, child).getLong(getChild(group, child).getColumnIndex(GoodsEntity._ID));
+    }
+
+    public String getCurrentGroupName(int group) {
+        return getGroup(group).getString(getCursor().getColumnIndex(CategoryEntity.NAME));
+    }
+
+    public long getCurrentGroupId(int group) {
+        return getGroup(group).getLong(getCursor().getColumnIndex(CategoryEntity._ID));
     }
 
     public void clearSelection() {
-        mSelection = -1;
+        selectionChild = -1;
+        selectionGroup = -1;
         notifyDataSetChanged();
     }
 
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        String selection = GoodsEntity.CATEGORY_ID + "=? AND (" + GoodsEntity.NAME + " LIKE ?" + " OR " + GoodsEntity.NAME + " LIKE ?)";
+        String[] selectionArgs = new String[]{getGroup(groupPosition).getString(getGroup(groupPosition).getColumnIndex(CategoryEntity._ID)),"%" + filter + "%",(filter.isEmpty()) ?"%" + filter + "%" : "%" + Character.toUpperCase(filter.charAt(0)) + filter.substring(1) + "%"};
+        Cursor cursor = context.getContentResolver().query(GoodsEntity.CONTENT_URI, null, selection, selectionArgs, GoodsEntity.NAME + " ASC");
+        return cursor.getCount();
+    }
+
+    @Override
+    public void onGroupCollapsed(int groupPosition) {
+    }
+
+    @Override
+    public void onGroupExpanded(int groupPosition) {
+    }
+
+    @Override
+    public void setGroupCursor(Cursor cursor) {
+
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
+        notifyDataSetChanged();
+    }
 }

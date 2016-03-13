@@ -4,54 +4,64 @@
     <string name="application_name">Ваш список покупок</string>
     <string name="fragment_name_pop">Популярные</string>
     <string name="fragment_name_pop_short">Популяр</string>
-	<string name="fragment_name_all_goods">Все товары</string>
-	<string name="fragment_name_my_list">Мой список</string>
-	<string name="communication_section">Communicate</string>
-	
-	<string name="empty_fragment_my_list">Нет товаров для покупок</string>
-	<string name="empty_fragment_popular">Начните работать с приложением, чтобы получить список популярных товаров</string>
-	
+    <string name="fragment_name_all_goods">Все товары</string>
+    <string name="fragment_name_my_list">Мой список</string>
+    <string name="communication_section">Communicate</string>
+
+    <string name="empty_fragment_my_list">Нет товаров для покупок</string>
+    <string name="empty_fragment_popular">Начните работать с приложением, чтобы получить список популярных товаров</string>
+
     <string name="hint_add_good">Введите довавляемый товар в строку поиска</string>
     <string name="tmp_good_name">Товар</string>
     <string name="button_desc">Кнопка для смены статуса</string>
-    
-	<string name="context_menu_delete">Удалить</string>
-	<string name="context_menu_edit">Редактировать</string>
-	<string name="context_menu_set_number">Установить количество</string>
-	<string name="context_menu_clean_popular">Очистить популярные</string>
-	
-	<string name="btn_add">Добавить</string>
-	<string name="alert_dialog_add_title">Добавить новый товар</string>
-	<string name="alert_dialog_add_mess">Введите имя товара</string>
 
-	<string name="alert_error_name_symbols">Не может начинаться со спец символов</string>
-	<string name="alert_error_name_exist">Товар уже существует</string>
-	<string name="alert_dialog_button_save">Сохранить</string>
-	<string name="alert_dialog_button_delete">Удалить</string>
-	<string name="alert_dialog_button_add_to_mylist">Добавить в Список</string>
-	<string name="alert_dialog_button_cancel">Отмена</string>
-	<string name="dialog_fr_edit_title">Редактировать товар</string>
-	<string name="dialog_fr_set_number_title">Установить количество</string>
-	<string name="alert_dialog_edit_mess">Имя товара</string>
-	<string name="alert_dialog_del_title">Удалить товар</string>
-	<string name="alert_dialog_del_mess">Вы уверены что хотите удалить\u0020</string>
-	<string name="alert_dialog_buy_title">Купить товар</string>
-	<string name="alert_dialog_buy_mess">\u0020 был уже куплен сегодня.Вы уверены что хотите добавить его в Список снова?</string>
-	
-	<string name="menu_item_send">Отправить список</string>
-	<string name="menu_item_delete_all">Очистить все купленные</string>
-	<string name="action_menu_delete_all">Удалить купленные</string>
-	<string name="action_menu_send">Отправить</string>
-	<string name="action_menu_search">Поиск</string>
-	
-	<string name="send_my_list">Отправить Список</string>
-	<string name="send_my_list_start_str">Купить:\u0020</string>
-	<string name="send_my_list_empty">Ничего не покупать</string>
-	
-	<string name="notification_goods_remaining">\u0020 товара(ов) осталось купить</string>
-	<string name="notification_shopping_finished">Список покупок пуст</string>
-	
-	<string name="toast_list_cleaned">Список купленных пуст</string>
-	<string name="toast_item_add">\u0020 добавлен в Список</string>
-	<string name="toast_goodname_incorrect">Имя некорректно. Введите другое</string>
+    <string name="context_menu_delete">Удалить</string>
+    <string name="context_menu_edit">Редактировать</string>
+    <string name="context_menu_set_number">Установить количество</string>
+    <string name="context_menu_clean_popular">Очистить популярные</string>
+
+    <string name="btn_add">Добавить</string>
+    <string name="alert_dialog_add_title">Добавить новый товар</string>
+    <string name="alert_dialog_add_mess">Введите имя товара</string>
+
+    <string name="alert_error_name_symbols">Не может начинаться со спец символов</string>
+    <string name="alert_error_name_good_exist">Товар уже существует</string>
+    <string name="alert_error_name_category_exist">Категория уже существует</string>
+    <string name="alert_dialog_button_save">Сохранить</string>
+    <string name="alert_dialog_button_delete">Удалить</string>
+    <string name="alert_dialog_button_add_to_mylist">Добавить в Список</string>
+    <string name="alert_dialog_button_cancel">Отмена</string>
+    <string name="dialog_fr_edit_good_title">Редактировать товар</string>
+    <string name="dialog_fr_set_number_title">Установить количество</string>
+    <string name="alert_dialog_edit_mess">Имя товара</string>
+    <string name="alert_dialog_edit_category_mess">Имя категории</string>
+    <string name="alert_dialog_del_title">Удалить товар</string>
+    <string name="alert_dialog_del_mess">Вы уверены что хотите удалить\u0020</string>
+    <string name="alert_dialog_buy_title">Купить товар</string>
+    <string name="alert_dialog_buy_mess">\u0020 был уже куплен сегодня.Вы уверены что хотите добавить его в Список снова?</string>
+
+    <string name="menu_item_send">Отправить список</string>
+    <string name="menu_item_delete_all">Очистить все купленные</string>
+    <string name="action_menu_delete_all">Удалить купленные</string>
+    <string name="action_menu_send">Отправить</string>
+    <string name="action_menu_search">Поиск</string>
+
+    <string name="send_my_list">Отправить Список</string>
+    <string name="send_my_list_start_str">Купить:\u0020</string>
+    <string name="send_my_list_empty">Ничего не покупать</string>
+
+    <string name="notification_goods_remaining">\u0020 товара(ов) осталось купить</string>
+    <string name="notification_shopping_finished">Список покупок пуст</string>
+
+    <string name="toast_list_cleaned">Список купленных пуст</string>
+    <string name="toast_item_add">\u0020 добавлен в Список</string>
+    <string name="toast_goodname_incorrect">Имя некорректно. Введите другое</string>
+    <string name="alert_dialog_add_category_mess">Введите имя категории</string>
+    <string name="alert_dialog_add_category_title">Добавить категорию</string>
+    <string name="fab_add_category">Добавить категорию</string>
+    <string name="fab_add_good">Добавить товар</string>
+    <string name="fab_clean_bought">Очистить купленые</string>
+    <string name="fab_send_list">Отправить Мой список</string>
+    <string name="alert_error_name_small">Длина имени не может быть меньше трех символов</string>
+    <string name="dialog_fr_edit_category_title">Редактировать категорию</string>
 </resources>

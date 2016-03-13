@@ -14,8 +14,10 @@ public interface CategoryEntity {
 
     String _ID = "_id";
     String NAME = "name";
+    String COLOR = "color";
 
     String CREATE_SCRIPT = "CREATE TABLE " + TABLE_NAME + " (" +
             _ID + " INTEGER PRIMARY KEY, " +
-            NAME + " TEXT NOT NULL)";
+            NAME + " TEXT NOT NULL, " +
+            COLOR + " TEXT NOT NULL)";
 }

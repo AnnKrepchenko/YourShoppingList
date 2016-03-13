@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -66,10 +67,12 @@ public abstract class BaseFragment extends Fragment implements LoaderManager.Loa
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         if (actionMode == null) {
+            Log.i("Click", "action mode active, item " + position);
             adapter.setNewSelection(position);
             actionMode = getActivity().startActionMode(callback);
             this.id = id;
         } else {
+            Log.i("Click", "action mode disactive, item " + position);
             deleteSelection();
         }
         return true;
@@ -82,6 +85,7 @@ public abstract class BaseFragment extends Fragment implements LoaderManager.Loa
 
 
     protected void setNotification(boolean isFirst){
+        Log.i("Notification", "notification start, isFirst " + isFirst);
         ((MainActivity)getActivity()).setNotification(isFirst);
     }
     @Override
@@ -122,6 +126,7 @@ public abstract class BaseFragment extends Fragment implements LoaderManager.Loa
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.empty_iv:
+                Log.i("Click", "empty cat");
                 setSnackBar(v,"Meow",null);
                 break;
         }

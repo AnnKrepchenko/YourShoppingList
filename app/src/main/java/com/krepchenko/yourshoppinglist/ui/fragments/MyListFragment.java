@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.TextView;
 
 import com.krepchenko.yourshoppinglist.R;
 import com.krepchenko.yourshoppinglist.db.GoodsEntity;
@@ -38,7 +37,7 @@ public class MyListFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new GoodsCursorAdapter(getActivity(),true);
+        adapter = new GoodsCursorAdapter(getActivity(), true);
         callback = new ActionMode.Callback() {
 
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -53,7 +52,8 @@ public class MyListFragment extends BaseFragment {
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_set_number:
-                        ((MainActivity)getActivity()).showAlert(ContextAlert.SET_NUMBER, id, adapter.getCurrentString(id));
+                        Log.i("Click", "set number");
+                        ((MainActivity) getActivity()).showAlert(ContextAlert.SET_NUMBER, id, adapter.getCurrentString(id), 0);
                         mode.finish();
                         return true;
                     default:
@@ -84,7 +84,7 @@ public class MyListFragment extends BaseFragment {
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, UriSegment.mylist.toString());
+        Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, UriSegment.my_list.toString());
         return new CursorLoader(getActivity(), uri, null, null, null, GoodsEntity.NAME
                 + " COLLATE LOCALIZED ASC");
     }
@@ -92,8 +92,10 @@ public class MyListFragment extends BaseFragment {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (actionMode != null) {
+            Log.i("Click","action mode active, "+position);
             checkSelectedId(position, id);
         } else {
+            Log.i("Click", "My list goods item clicked " + position);
             Cursor cursor = adapter.getCursor();
             cursor.moveToPosition(position);
             ContentValues good = new ContentValues();
@@ -114,7 +116,6 @@ public class MyListFragment extends BaseFragment {
             Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, Uri.encode(Long.toString(id)));
             getActivity().getContentResolver().update(uri, good, null, null);
             setNotification(false);
-            Log.i("Click", "My list goods item clicked " + position);
         }
     }
 

@@ -20,18 +20,21 @@ public class GoodsContentProvider extends ContentProvider {
     //--
     private static final int CATEGORIES = 7;
     private static final int CATEGORIES_CATEGORY = 8;
+    //-
+    private static final int ALL_GOODS= 9;
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
         URI_MATCHER.addURI(GoodsEntity.AUTHORITY, GoodsEntity.TABLE_NAME, GOODS);
         URI_MATCHER.addURI(GoodsEntity.AUTHORITY, GoodsEntity.TABLE_NAME + "/#", GOODS_GOOD);
-        URI_MATCHER.addURI(GoodsEntity.AUTHORITY, GoodsEntity.TABLE_NAME + "/mylist", GOODS_MYLIST);
+        URI_MATCHER.addURI(GoodsEntity.AUTHORITY, GoodsEntity.TABLE_NAME + "/my_list", GOODS_MYLIST);
         URI_MATCHER.addURI(GoodsEntity.AUTHORITY, GoodsEntity.TABLE_NAME + "/popular", GOODS_POPULAR);
         URI_MATCHER.addURI(GoodsEntity.AUTHORITY, GoodsEntity.TABLE_NAME + "/avg_popular", GOODS_POPULAR_AVG);
         URI_MATCHER.addURI(GoodsEntity.AUTHORITY, GoodsEntity.TABLE_NAME + "/max_popular", GOODS_POPULAR_MAX);
         URI_MATCHER.addURI(GoodsEntity.AUTHORITY, CategoryEntity.TABLE_NAME, CATEGORIES);
         URI_MATCHER.addURI(GoodsEntity.AUTHORITY, CategoryEntity.TABLE_NAME + "/#", CATEGORIES_CATEGORY);
+        URI_MATCHER.addURI(GoodsEntity.AUTHORITY, CategoryEntity.TABLE_NAME + "/all_goods", ALL_GOODS);
     }
 
     @Override
@@ -77,12 +80,16 @@ public class GoodsContentProvider extends ContentProvider {
                 tableName = CategoryEntity.TABLE_NAME;
                 selectionToAppend = CategoryEntity._ID + " = " + uri.getLastPathSegment();
                 break;
+            case ALL_GOODS:
+                tableName = CategoryEntity.TABLE_NAME;
+                query = "SELECT *"+/*GoodsEntity.TABLE_NAME+"."+ GoodsEntity.NAME + ", "+ CategoryEntity.TABLE_NAME+"."+CategoryEntity.NAME + */" FROM " + GoodsEntity.TABLE_NAME + ", "+ CategoryEntity.TABLE_NAME + " WHERE " + GoodsEntity.TABLE_NAME+"."+GoodsEntity.CATEGORY_ID + "=" + CategoryEntity.TABLE_NAME+"."+CategoryEntity._ID;
+                break;
             default:
                 throw new IllegalArgumentException("Wrong uri");
         }
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor c;
-        if(URI_MATCHER.match(uri)==GOODS_POPULAR_AVG || URI_MATCHER.match(uri)==GOODS_POPULAR_MAX){
+        if(URI_MATCHER.match(uri)==GOODS_POPULAR_AVG || URI_MATCHER.match(uri)==GOODS_POPULAR_MAX || URI_MATCHER.match(uri)==ALL_GOODS){
              c = db.rawQuery(query,null);
         }else {
             c = db.query(tableName, projection, appendSelections(selection, selectionToAppend), selectionArgs, null, null, sortOrder);

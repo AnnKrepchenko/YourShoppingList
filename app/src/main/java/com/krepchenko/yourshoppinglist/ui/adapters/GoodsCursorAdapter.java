@@ -46,7 +46,7 @@ public class GoodsCursorAdapter extends BaseCursorAdapter {
         if (mSelection == cursor.getPosition()) {
             view.setBackgroundColor(context.getResources().getColor(R.color.divider));
         } else {
-            view.setBackgroundColor(context.getResources().getColor(android.R.color.background_light));
+            view.setBackground(null);
         }
         if (showNum) {
             int numberColumn = cursor.getColumnIndex(GoodsEntity.NUMBER);

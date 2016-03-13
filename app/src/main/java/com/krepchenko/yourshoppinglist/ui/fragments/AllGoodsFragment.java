@@ -11,6 +11,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,17 +19,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.FilterQueryProvider;
+import android.widget.ExpandableListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.krepchenko.yourshoppinglist.R;
+import com.krepchenko.yourshoppinglist.db.CategoryEntity;
 import com.krepchenko.yourshoppinglist.db.GoodsEntity;
 import com.krepchenko.yourshoppinglist.ui.activity.MainActivity;
 import com.krepchenko.yourshoppinglist.ui.adapters.AllGoodsCursorAdapter;
-import com.krepchenko.yourshoppinglist.ui.adapters.GoodsCursorAdapter;
 import com.krepchenko.yourshoppinglist.utils.ContextAlert;
 
 import java.text.SimpleDateFormat;
@@ -38,17 +39,23 @@ import java.util.Locale;
 /**
  * Created by Ann on 13.02.2016.
  */
-public class AllGoodsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
+public class AllGoodsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener ,ViewTreeObserver.OnScrollChangedListener{
 
     private String mSearchText = "";
+    private ActionMode actionMode;
+    private ActionMode.Callback callback;
     private SearchView mSearchview;
     private static final String KEY_SAVE_SEARCH_TEXT = "search_text";
     private AllGoodsCursorAdapter adapter;
+    private ExpandableListView listView;
+    private int groupCount=0;
+    private int child = -1;
+    private int group = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new AllGoodsCursorAdapter(getActivity(),false);
+        adapter = new AllGoodsCursorAdapter(getActivity(), this);
         setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             mSearchText = savedInstanceState.getString(KEY_SAVE_SEARCH_TEXT);
@@ -67,11 +74,26 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_edit:
-                        ((MainActivity)getActivity()).showAlert(ContextAlert.EDIT, id, adapter.getCurrentString(id));
+                        if (child == -1) {
+                            Log.i("Click", "allgoods: action edit group");
+                            ((MainActivity) getActivity()).showAlert(ContextAlert.EDIT_CATEGORY, 0, adapter.getCurrentGroupName(group), adapter.getCurrentGroupId(group));
+
+                        } else {
+                            Log.i("Click", "allgoods: action edit child");
+                            ((MainActivity) getActivity()).showAlert(ContextAlert.EDIT_GOOD, adapter.getCurrentChildId(group, child), adapter.getCurrentName(group, child), group);
+                        }
                         mode.finish();
                         return true;
                     case R.id.action_delete:
-                        ((MainActivity)getActivity()).showAlert(ContextAlert.DELETE, id, adapter.getCurrentString(id));
+                        if (child == -1) {
+                            Log.i("Click", "allgoods: action delete group");
+                            ((MainActivity) getActivity()).showAlert(ContextAlert.DELETE_CATEGORY, 0, adapter.getCurrentGroupName(group), adapter.getCurrentGroupId(group));
+
+                        } else {
+                            Log.i("Click", "allgoods: action delete child");
+                            ((MainActivity) getActivity()).showAlert(ContextAlert.DELETE_GOOD, adapter.getCurrentChildId(group, child), adapter.getCurrentName(group, child), 0);
+                        }
+                        adapter.notifyDataSetChanged();
                         mode.finish();
                         return true;
                     default:
@@ -90,13 +112,18 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_simple_listview, container, false);
+        return inflater.inflate(R.layout.fragment_pinned_section_listview, container, false);
     }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        listView = (ExpandableListView) view.findViewById(R.id.fragment_listview);
         listView.setAdapter(adapter);
         getLoaderManager().initLoader(0, null, this);
+        listView.setOnChildClickListener(this);
+        listView.setOnGroupClickListener(this);
+      //  listView.setOnScrollChangeListener();
+        listView.setOnItemLongClickListener(this);
     }
 
     @Override
@@ -105,17 +132,62 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
         getLoaderManager().restartLoader(0, null, this);
     }
 
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+            Log.i("Longclick", "child " + position);
+            group = ExpandableListView.getPackedPositionGroup(id);
+            child = ExpandableListView.getPackedPositionChild(id);
+            if (actionMode == null) {
+                adapter.setNewSelection(group, child);
+                actionMode = getActivity().startActionMode(callback);
+            } else {
+                deleteSelection();
+            }
+        } else if (ExpandableListView.getPackedPositionType(id) == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+            Log.i("Longclick", "group " + position);
+            group = ExpandableListView.getPackedPositionGroup(id);
+            child = ExpandableListView.getPackedPositionChild(id);
+
+            if (actionMode == null) {
+                adapter.setNewSelection(group, child);
+                actionMode = getActivity().startActionMode(callback);
+            } else {
+                deleteSelection();
+            }
+        }
+        return true;
+    }
+
+    private void deleteSelection() {
+        this.id = -1;
+        adapter.clearSelection();
+        actionMode.finish();
+    }
+
+
+    protected void checkSelectedId(int group, int child) {
+        if (this.group != group || this.child != child) {
+            adapter.setNewSelection(group, child);
+            this.group = group;
+            this.child = child;
+        } else {
+            deleteSelection();
+        }
+    }
+
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        MenuItem item = menu.add("Search").setIcon(android.R.drawable.ic_menu_search);
+        MenuItem item = menu.add("Search").setIcon(R.drawable.ic_magnify_white_24dp);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         mSearchview = new SearchView(((AppCompatActivity) getActivity()).getSupportActionBar().getThemedContext());
         if (mSearchview != null) {
             mSearchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextChange(String newText) {
+                    Log.i("Search", newText);
                     mSearchText = newText;
-                    getLoaderManager().restartLoader(0, null, AllGoodsFragment.this);
+                    adapter.setFilter(mSearchText);
                     return true;
                 }
 
@@ -126,6 +198,17 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
                 }
             });
         }
+        mSearchview.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                Log.i("Search","onClose");
+                for (int i=0;i<groupCount;i++){
+                    Log.i("Search","collapse group " + i);
+                    listView.collapseGroup(i);
+                }
+                return false;
+            }
+        });
         if (!mSearchText.equals("")) {
             mSearchview.setQuery(mSearchText, true);
         }
@@ -144,39 +227,6 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (actionMode != null) {
-            checkSelectedId(position, id);
-        } else {
-            Cursor cursor = adapter.getCursor();
-            ContentValues good = new ContentValues();
-            String goodName = cursor.getString(cursor.getColumnIndex(GoodsEntity.NAME));
-            String status = cursor.getString(cursor.getColumnIndex(GoodsEntity.STATUS));
-            String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
-            if (status.equals(GoodsEntity.Status.GENERAL.toString())) {
-                String dateLastBought = cursor.getString(cursor.getColumnIndex(GoodsEntity.DATE_LAST_BOUGHT));
-                if (dateLastBought.equals(currentDate)) {
-                    ((MainActivity)getActivity()).showAlert(ContextAlert.SURE_BUY, id, goodName);
-                } else {
-                    good.put(GoodsEntity.STATUS, GoodsEntity.Status.TOBUY.toString());
-                    setSnackBar(view,cursor.getString(cursor.getColumnIndex(GoodsEntity.NAME)) + getString(R.string.toast_item_add),null);
-                }
-            } else if (status.equals(GoodsEntity.Status.TOBUY.toString())) {
-                good.put(GoodsEntity.STATUS, GoodsEntity.Status.GENERAL.toString());
-            } else if (status.equals(GoodsEntity.Status.BOUGHT.toString())) {
-                good.put(GoodsEntity.STATUS, GoodsEntity.Status.GENERAL.toString());
-            }
-            int popularity = cursor.getInt(cursor.getColumnIndex(GoodsEntity.POPULARITY));
-            popularity++;
-            good.put(GoodsEntity.NUMBER, 0);
-            good.put(GoodsEntity.POPULARITY, popularity);
-            Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, Uri.encode(Long.toString(id)));
-            getActivity().getContentResolver().update(uri, good, null, null);
-            setNotification(false);
-        }
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         mSearchview = null;
@@ -184,19 +234,71 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String selection = null;
-        String[] selectionArgs = null;
-        if(mSearchText!=null && !mSearchText.isEmpty()){
-            selection = GoodsEntity.NAME + " LIKE ?" +" OR " +GoodsEntity.NAME+ " LIKE ?";
-            selectionArgs = new String[]{"%"+ mSearchText+"%","%"+Character.toUpperCase(mSearchText.charAt(0)) + mSearchText.substring(1) + "%"};
-        }
-        return new CursorLoader(getActivity(), GoodsEntity.CONTENT_URI, null, selection,selectionArgs, GoodsEntity.CATEGORY_ID);
+        return new CursorLoader(getActivity(), CategoryEntity.CONTENT_URI, null, null, null, null);
     }
+
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        adapter.swapCursor(data);
+        groupCount = data.getCount();
+        adapter.changeCursor(data);
     }
 
     public void onLoaderReset(Loader<Cursor> loader) {
-        adapter.swapCursor(null);
+        adapter.changeCursor(null);
+    }
+
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        if (actionMode != null) {
+            Log.i("Click", "action mode active, child: child " + childPosition + " group " + groupPosition);
+            checkSelectedId(groupPosition, childPosition);
+        } else {
+            Log.i("Click", " child: child " + childPosition + " group " + groupPosition);
+            Cursor cursor = adapter.getChild(groupPosition, childPosition);
+            ContentValues good = new ContentValues();
+            int good_id = cursor.getInt(cursor.getColumnIndex(GoodsEntity._ID));
+            String goodName = cursor.getString(cursor.getColumnIndex(GoodsEntity.NAME));
+            String status = cursor.getString(cursor.getColumnIndex(GoodsEntity.STATUS));
+            String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
+            if (status.equals(GoodsEntity.Status.GENERAL.toString())) {
+                String dateLastBought = cursor.getString(cursor.getColumnIndex(GoodsEntity.DATE_LAST_BOUGHT));
+                if (dateLastBought.equals(currentDate)) {
+                    ((MainActivity) getActivity()).showAlert(ContextAlert.SURE_BUY, good_id, goodName, 0);
+                } else {
+                    good.put(GoodsEntity.STATUS, GoodsEntity.Status.TOBUY.toString());
+                    setSnackBar(v, cursor.getString(cursor.getColumnIndex(GoodsEntity.NAME)) + getString(R.string.toast_item_add), null);
+                }
+            } else if (status.equals(GoodsEntity.Status.TOBUY.toString())) {
+                good.put(GoodsEntity.STATUS, GoodsEntity.Status.GENERAL.toString());
+            } else if (status.equals(GoodsEntity.Status.BOUGHT.toString())) {
+                good.put(GoodsEntity.STATUS, GoodsEntity.Status.GENERAL.toString());
+            }
+            good.put(GoodsEntity.NUMBER, 0);
+            Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, Uri.encode(Long.toString(good_id)));
+            getActivity().getContentResolver().update(uri, good, null, null);
+            setNotification(false);
+        }
+        return true;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+        if (actionMode != null) {
+            Log.i("Click", "action mode active, group: group " + groupPosition);
+            checkSelectedId(groupPosition, -1);
+            return true;
+        } else {
+            Log.i("Click", "group: group " + groupPosition);
+            return false;
+        }
+    }
+
+    @Override
+    public void onScrollChanged() {
+
     }
 }
