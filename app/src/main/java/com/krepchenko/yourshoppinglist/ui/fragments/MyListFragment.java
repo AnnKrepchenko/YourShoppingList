@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 
 import com.krepchenko.yourshoppinglist.R;
@@ -31,7 +32,7 @@ import java.util.Locale;
 /**
  * Created by Ann on 13.02.2016.
  */
-public class MyListFragment extends BaseFragment {
+public class MyListFragment extends BaseFragment implements AbsListView.OnScrollListener {
 
 
     @Override
@@ -79,6 +80,7 @@ public class MyListFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         setEmptyText(R.string.empty_fragment_my_list);
         listView.setAdapter(adapter);
+        listView.setOnScrollListener(this);
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -116,6 +118,21 @@ public class MyListFragment extends BaseFragment {
             Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, Uri.encode(Long.toString(id)));
             getActivity().getContentResolver().update(uri, good, null, null);
             setNotification(false);
+        }
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        final int lastItem = firstVisibleItem + visibleItemCount;
+        if(lastItem == totalItemCount && totalItemCount>visibleItemCount) {
+            ((MainActivity)getActivity()).hideFam();
+        }else{
+            ((MainActivity)getActivity()).showFam();
         }
     }
 

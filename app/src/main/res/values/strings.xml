@@ -44,6 +44,7 @@
     <string name="alert_dialog_edit_mess">Item\'s name</string>
     <string name="alert_dialog_edit_category_mess">Name of the category</string>
     <string name="alert_dialog_del_title">Delete item</string>
+    <string name="alert_dialog_del_category_title">Delete category</string>
     <string name="alert_dialog_del_mess">Are You sure You want to delete\u0020</string>
     <string name="alert_dialog_buy_title">Buy item</string>
     <string name="alert_dialog_buy_mess">\u0020 have been bought today.Are You sure You need it again?</string>

@@ -7,10 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -18,16 +18,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -67,7 +67,9 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton fabSendList;
     private NavigationView navigationView;
     private int selectedItem = 0;
-
+    private Animation hide_fab;
+    private Animation show_fab;
+    private boolean fabClickable = true;
 
     private long goodId;
     private long categotyId;
@@ -81,11 +83,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        show_fab = AnimationUtils.loadAnimation(getApplication(), R.anim.fab_show);
+        hide_fab = AnimationUtils.loadAnimation(getApplication(), R.anim.fab_hide);
         fam = (FloatingActionsMenu) findViewById(R.id.fam);
-        /*CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fam.getLayoutParams();
-        p.setBehavior(new ScrollAwareFABBehavior(this,null));
-        fam.setLayoutParams(p);*/
         fabAddGood = (FloatingActionButton) findViewById(R.id.fab_add_good);
         fabAddGood.setColorPressed(R.color.accent);
         fabAddGood.setOnClickListener(this);
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSnackBar(v, getEmojiByUnicode(0x1F601) + " <- смотри че могу", null);
+                setSnackBar(v, "Уже можешь начинать улыбаться=)", null);
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public String getEmojiByUnicode(int unicode){
+    public String getEmojiByUnicode(int unicode) {
         return new String(Character.toChars(unicode));
     }
 
@@ -157,19 +157,44 @@ public class MainActivity extends AppCompatActivity
         return selectDrawerItem(item);
     }
 
+    public void collapseFam() {
+        fam.collapse();
+    }
+
+    public void hideFam() {
+        if (fabClickable) {
+            Log.i("Fam", "hide");
+            fam.startAnimation(hide_fab);
+            fabClickable = false;
+            fam.setEnabled(false);
+            fam.setVisibility(View.GONE);
+        }
+    }
+
+    public void showFam() {
+        if (!fabClickable) {
+            Log.i("Fam", "show");
+            fam.setEnabled(true);
+            fam.startAnimation(show_fab);
+            fabClickable = true;
+        }
+    }
+
     private boolean selectDrawerItem(MenuItem item) {
         Fragment fragment = null;
         Class fragmentClass = null;
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         int id = item.getItemId();
-        fam.collapse();
+        collapseFam();
         if (id == R.id.nav_my_list) {
             fragmentClass = MyListFragment.class;
             fabAddCategory.setVisibility(View.GONE);
             fabAddGood.setVisibility(View.GONE);
             fabSendList.setVisibility(View.VISIBLE);
             fabCleanList.setVisibility(View.VISIBLE);
+            Log.i("Fam", "visible");
             fam.setVisibility(View.VISIBLE);
+            fam.setEnabled(true);
             selectedItem = 0;
             Log.i("Drawer", fragmentClass.getName());
         } else if (id == R.id.nav_all_goods) {
@@ -178,11 +203,15 @@ public class MainActivity extends AppCompatActivity
             fabAddGood.setVisibility(View.VISIBLE);
             fabSendList.setVisibility(View.GONE);
             fabCleanList.setVisibility(View.GONE);
+            Log.i("Fam", "visible");
             fam.setVisibility(View.VISIBLE);
+            fam.setEnabled(true);
             fragmentClass = AllGoodsFragment.class;
             Log.i("Drawer", fragmentClass.getName());
         } else if (id == R.id.nav_popular) {
+            Log.i("Fam", "gone");
             fam.setVisibility(View.GONE);
+            fam.setEnabled(false);
             fragmentClass = PopularFragment.class;
             Log.i("Drawer", fragmentClass.getName());
         }
@@ -257,7 +286,7 @@ public class MainActivity extends AppCompatActivity
             }
             break;
             case DELETE_CATEGORY: {
-                alertDialog.setTitle(R.string.alert_dialog_del_title);
+                alertDialog.setTitle(R.string.alert_dialog_del_category_title);
                 alertDialog.setMessage(getString(R.string.alert_dialog_del_mess) + name + "?");
                 alertDialog.setIcon(R.drawable.delete_icon);
                 alertDialog.setPositiveButton(getString(R.string.alert_dialog_button_delete), new DialogInterface.OnClickListener() {
@@ -265,7 +294,7 @@ public class MainActivity extends AppCompatActivity
                         ContentValues good = new ContentValues();
                         good.put(GoodsEntity.CATEGORY_ID, 100);
                         getContentResolver().update(GoodsEntity.CONTENT_URI, good, GoodsEntity.CATEGORY_ID + "=?", new String[]{Long.toString(categoryId)});
-                        Uri uri = Uri.withAppendedPath(CategoryEntity.CONTENT_URI, Uri.encode(Long.toString(goodId)));
+                        Uri uri = Uri.withAppendedPath(CategoryEntity.CONTENT_URI, Uri.encode(Long.toString(categoryId)));
                         getContentResolver().delete(uri, null, null);
                         Log.i("Alert|Delete category", "deleted category " + name);
                         cleanSaving();
@@ -373,41 +402,41 @@ public class MainActivity extends AppCompatActivity
                 });
                 final AlertDialog alertDialog1 = alertDialog.create();
                 alertDialog1.setOnShowListener(new DialogInterface.OnShowListener() {
-                       @Override
-                       public void onShow(DialogInterface dialog) {
-                           Button b = alertDialog1.getButton(AlertDialog.BUTTON_POSITIVE);
-                           b.setOnClickListener(new View.OnClickListener() {
+                                                   @Override
+                                                   public void onShow(DialogInterface dialog) {
+                                                       Button b = alertDialog1.getButton(AlertDialog.BUTTON_POSITIVE);
+                                                       b.setOnClickListener(new View.OnClickListener() {
 
-                                @Override
-                                public void onClick(View view) {
-                                    ContentValues good = new ContentValues();
-                                    String name = input_category.getText().toString();
-                                    if (TextUtils.checkNameForStartSpecSymbols(name)) {
-                                        if (!checkCategoryExist(name, categoryId)) {
-                                            if (name.length() > 2) {
-                                                good.put(GoodsEntity.NAME, name.trim());
-                                                Uri uri = Uri.withAppendedPath(CategoryEntity.CONTENT_URI, Uri.encode(Long.toString(categoryId)));
-                                                getContentResolver().update(uri, good, null, null);
-                                                cleanSaving();
-                                                Log.i("Alert|Edit category", "updated category " + name);
-                                                alertDialog1.dismiss();
-                                            } else {
-                                                Log.i("Alert|Edit category", "not updated category " + name);
-                                                til_dialog_category.setError(getString(R.string.alert_error_name_small));
-                                            }
-                                        } else {
-                                            Log.i("Alert|Edit category", "not updated category " + name);
-                                            til_dialog_category.setError(getString(R.string.alert_error_name_category_exist));
-                                        }
-                                    } else {
-                                        Log.i("Alert|Edit category", "not updated category " + name);
-                                        til_dialog_category.setError(getString(R.string.alert_error_name_symbols));
-                                    }
-                                }
-                            }
-                           );
-                       }
-                   }
+                                                                                @Override
+                                                                                public void onClick(View view) {
+                                                                                    ContentValues good = new ContentValues();
+                                                                                    String name = input_category.getText().toString();
+                                                                                    if (TextUtils.checkNameForStartSpecSymbols(name)) {
+                                                                                        if (!checkCategoryExist(name, categoryId)) {
+                                                                                            if (name.length() > 2) {
+                                                                                                good.put(GoodsEntity.NAME, name.trim());
+                                                                                                Uri uri = Uri.withAppendedPath(CategoryEntity.CONTENT_URI, Uri.encode(Long.toString(categoryId)));
+                                                                                                getContentResolver().update(uri, good, null, null);
+                                                                                                cleanSaving();
+                                                                                                Log.i("Alert|Edit category", "updated category " + name);
+                                                                                                alertDialog1.dismiss();
+                                                                                            } else {
+                                                                                                Log.i("Alert|Edit category", "not updated category " + name);
+                                                                                                til_dialog_category.setError(getString(R.string.alert_error_name_small));
+                                                                                            }
+                                                                                        } else {
+                                                                                            Log.i("Alert|Edit category", "not updated category " + name);
+                                                                                            til_dialog_category.setError(getString(R.string.alert_error_name_category_exist));
+                                                                                        }
+                                                                                    } else {
+                                                                                        Log.i("Alert|Edit category", "not updated category " + name);
+                                                                                        til_dialog_category.setError(getString(R.string.alert_error_name_symbols));
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                       );
+                                                   }
+                                               }
                 );
                 alertDialog1.show();
             }
@@ -498,8 +527,8 @@ public class MainActivity extends AppCompatActivity
                                     if (!checkCategoryExist(name, -1)) {
                                         if (name.length() > 2) {
                                             category.put(CategoryEntity.NAME, name.trim());
-                                            String color = "#33"+generateColor()+generateColor()+generateColor();
-                                            category.put(CategoryEntity.COLOR,color);
+                                            String color = "#33" + generateColor() + generateColor() + generateColor();
+                                            category.put(CategoryEntity.COLOR, color);
                                             getContentResolver().insert(CategoryEntity.CONTENT_URI, category);
                                             cleanSaving();
                                             Log.i("Alert|Add category", "saved category " + name + " color " + color);
@@ -606,9 +635,14 @@ public class MainActivity extends AppCompatActivity
         return myList;
     }
 
-    private String generateColor(){
+    private String generateColor() {
         String res = Integer.toHexString(new Random().nextInt(255));
-        return res.length()>1 ? res : "0"+res;
+        return res.length() > 1 ? res : "0" + res;
+    }
+
+    private String generateColor(int color) {
+        String res = Integer.toHexString(color);
+        return res.length() > 1 ? res : "0" + res;
     }
 
 
@@ -627,6 +661,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.fab_add_category:
                 Log.i("Click", "fab add category");
                 showAlert(ContextAlert.ADD_CATEGORY, 0, null, 0);
+                // addCategory();
                 break;
             case R.id.fab_clean_bought:
                 cleanBought();
@@ -640,6 +675,18 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private void addCategory() {
+        ContentValues category = new ContentValues();
+        for (int i = 0; i < 1100000000; i++) {
+            String name = String.valueOf(i);
+            category.put(CategoryEntity.NAME, name.trim());
+            String color = "#33" + generateColor() + generateColor() + generateColor();
+            category.put(CategoryEntity.COLOR, color);
+            getContentResolver().insert(CategoryEntity.CONTENT_URI, category);
+            Color.parseColor(color);
+            Log.i("Alert|Add category", "saved category " + name + " color " + color);
+        }
+    }
 
     class NotifyTask extends AsyncTask<Boolean, Void, Integer> {
 
@@ -681,35 +728,5 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public class ScrollAwareFABBehavior extends android.support.design.widget.FloatingActionButton.Behavior {
-        public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {
-            super();
-        }
 
-        @Override
-        public boolean onStartNestedScroll(final CoordinatorLayout coordinatorLayout,
-                                           final android.support.design.widget.FloatingActionButton child,
-                                           final View directTargetChild, final View target, final int nestedScrollAxes) {
-            // Ensure we react to vertical scrolling
-            return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL
-                    || super.onStartNestedScroll(coordinatorLayout, child,
-                    directTargetChild, target, nestedScrollAxes);
-        }
-
-        @Override
-        public void onNestedScroll(final CoordinatorLayout coordinatorLayout,
-                                   final android.support.design.widget.FloatingActionButton child,
-                                   final View target, final int dxConsumed, final int dyConsumed,
-                                   final int dxUnconsumed, final int dyUnconsumed) {
-            super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed,
-                    dxUnconsumed, dyUnconsumed);
-            if (dyConsumed > 0 && child.getVisibility() == View.VISIBLE) {
-                // User scrolled down and the FAB is currently visible -> hide the FAB
-                child.hide();
-            } else if (dyConsumed < 0 && child.getVisibility() != View.VISIBLE) {
-                // User scrolled up and the FAB is currently not visible -> show the FAB
-                child.show();
-            }
-        }
-    }
 }

@@ -3,6 +3,7 @@ package com.krepchenko.yourshoppinglist.ui.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,6 @@ public class AllGoodsCursorAdapter extends CursorTreeAdapter {
         ExpandableListView mExpandableListView = (ExpandableListView) parent;
         if (!filter.isEmpty()) {
             mExpandableListView.expandGroup(groupPosition);
-        }else {
-          //  mExpandableListView.collapseGroup(groupPosition);
         }
         return v;
     }
@@ -57,19 +56,19 @@ public class AllGoodsCursorAdapter extends CursorTreeAdapter {
     @Override
     public View newGroupView(Context context, Cursor cursor,
                              boolean isExpanded, ViewGroup parent) {
-        final View view = inflater.inflate(R.layout.good, parent, false);
+        final View view = inflater.inflate(R.layout.good_group_item, parent, false);
         return view;
     }
 
     @Override
     public void bindGroupView(View view, Context context, Cursor cursor,
                               boolean isExpanded) {
-
         TextView lblListHeader = (TextView) view
                 .findViewById(R.id.good_name);
         if (selectionChild == -1 && selectionGroup == cursor.getPosition()) {
             view.setBackgroundColor(context.getResources().getColor(R.color.accent));
         } else {
+            Log.i("Color","color - " +cursor.getString(cursor.getColumnIndex(CategoryEntity.COLOR)));
             view.setBackgroundColor(Color.parseColor(cursor.getString(cursor.getColumnIndex(CategoryEntity.COLOR))));
         }
         if (lblListHeader != null) {

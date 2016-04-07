@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.krepchenko.yourshoppinglist.R;
 import com.krepchenko.yourshoppinglist.ui.activity.MainActivity;
 import com.krepchenko.yourshoppinglist.ui.adapters.BaseCursorAdapter;
+import com.krepchenko.yourshoppinglist.utils.TextUtils;
 
 /**
  * Created by Ann on 13.02.2016.
@@ -48,6 +49,13 @@ public abstract class BaseFragment extends Fragment implements LoaderManager.Loa
         listView = (ListView) view.findViewById(R.id.fragment_listview);
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        TextUtils.hideKeyboard(getActivity());
+
     }
 
     protected void checkSelectedId(int position, long id) {

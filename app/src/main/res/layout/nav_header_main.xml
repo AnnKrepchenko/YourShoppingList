@@ -30,6 +30,6 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Its time to click and smile =)" />
+        android:text="For cats only/For cats only/For cats only" />
 
 </LinearLayout>

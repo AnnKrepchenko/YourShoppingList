@@ -29,10 +29,6 @@ public abstract class BaseCursorAdapter extends CursorAdapter {
         notifyDataSetChanged();
     }
 
-    public Integer getCurrentCheckedPosition() {
-        return mSelection;
-    }
-
     public String getCurrentString(long id){
         Cursor cursor = context.getContentResolver().query(GoodsEntity.CONTENT_URI, new String[]{GoodsEntity.NAME}, GoodsEntity._ID + "=?", new String[]{Long.toString(id)}, null);
         if (cursor.moveToFirst()){

@@ -40,14 +40,16 @@ public class PopularFragment extends BaseFragment {
         adapter = new PopularGoodsCursorAdapter(getActivity());
         countScope();
         setHasOptionsMenu(true);
+        ((MainActivity)getActivity()).hideFam();
     }
 
-
+    /*
+    03-29 13:38:49.482: W/art(23801): Before Android 4.1, method int android.support.v7.widget.ListViewCompat.lookForSelectablePosition(int, boolean) would have incorrectly overridden the package-private method in android.widget.ListView**/
     private void countScope() {
         int max = query(UriSegment.max_popular.toString(), "MAX");
         int avg = query(UriSegment.avg_popular.toString(), "AVG");
         adapter.setScope((max - avg) / 5, avg);
-        Log.i("Popularity", "the step for star "+ (max - avg) / 5 + ", the max  " + max + ", the avg "+avg);
+        Log.i("Popularity", "the step for star " + (max - avg) / 5 + ", the max  " + max + ", the avg " + avg);
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -65,7 +67,7 @@ public class PopularFragment extends BaseFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_clean_popular:
-                Log.i("Click","clean popular");
+                Log.i("Click", "clean popular");
                 ContentValues good = new ContentValues();
                 good.put(GoodsEntity.POPULARITY, 0);
                 getActivity().getContentResolver().update(GoodsEntity.CONTENT_URI, good, null, null);
@@ -101,7 +103,7 @@ public class PopularFragment extends BaseFragment {
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.i("Click","clean popular");
+        Log.i("Click", "Popular item clicked " + position);
         Cursor cursor = adapter.getCursor();
         ContentValues good = new ContentValues();
         String goodName = cursor.getString(cursor.getColumnIndex(GoodsEntity.NAME));
@@ -110,7 +112,7 @@ public class PopularFragment extends BaseFragment {
         if (status.equals(GoodsEntity.Status.GENERAL.toString())) {
             String dateLastBought = cursor.getString(cursor.getColumnIndex(GoodsEntity.DATE_LAST_BOUGHT));
             if (dateLastBought.equals(currentDate)) {
-                ((MainActivity) getActivity()).showAlert(ContextAlert.SURE_BUY, id, goodName,0);
+                ((MainActivity) getActivity()).showAlert(ContextAlert.SURE_BUY, id, goodName, 0);
             } else {
                 good.put(GoodsEntity.STATUS, GoodsEntity.Status.TOBUY.toString());
                 Toast.makeText(getActivity(), cursor.getString(cursor.getColumnIndex(GoodsEntity.NAME)) + getString(R.string.toast_item_add),

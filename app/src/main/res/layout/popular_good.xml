@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="@dimen/good_horizontal_margin"
         android:layout_marginTop="10dp"
         android:gravity="start"
         android:singleLine="true"
@@ -30,6 +30,7 @@
             android:id="@+id/good_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_gravity="center_vertical"
             style="@style/good_rating"
             android:isIndicator="true"
@@ -43,7 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="10dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/good_horizontal_margin"
         android:layout_marginTop="10dp"
         android:contentDescription="@string/button_desc" />
 

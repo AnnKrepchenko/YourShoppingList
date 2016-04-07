@@ -64,4 +64,5 @@
     <string name="fab_send_list">Отправить Мой список</string>
     <string name="alert_error_name_small">Длина имени не может быть меньше трех символов</string>
     <string name="dialog_fr_edit_category_title">Редактировать категорию</string>
+    <string name="alert_dialog_del_category_title">Удалить категорию</string>
 </resources>
