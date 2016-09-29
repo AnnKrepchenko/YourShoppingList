@@ -35,7 +35,6 @@ import android.widget.NumberPicker;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
-import com.crashlytics.android.Crashlytics;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.krepchenko.yourshoppinglist.R;
@@ -48,8 +47,6 @@ import com.krepchenko.yourshoppinglist.utils.ContextAlert;
 import com.krepchenko.yourshoppinglist.utils.TextUtils;
 
 import java.util.Random;
-
-import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -79,7 +76,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -110,7 +106,7 @@ public class MainActivity extends AppCompatActivity
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSnackBar(v, "Уже можешь начинать улыбаться=)", null);
+                setSnackBar(v, getString(R.string.snackbar) +" " + getEmojiByUnicode(128513), null);
             }
         });
         navigationView.setNavigationItemSelectedListener(this);

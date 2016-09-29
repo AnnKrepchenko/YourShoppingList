@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category_colors">
+        <item>#4Dceff82</item>
+        <item>#4Df1b1d0</item>
+        <item>#4Dfcd04a</item>
+        <item>#4Db13939</item>
+        <item>#4D9c381f</item>
+        <item>#4Db9c5c8</item>
+    </string-array>
+</resources>

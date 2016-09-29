@@ -1,0 +1,77 @@
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/splash_cat_anim">
+    <item
+        android:drawable="@drawable/launcher1"
+        android:duration="@integer/anim_frame_duration" />
+    <item
+        android:drawable="@drawable/launcher1"
+        android:duration="@integer/anim_frame_duration" />
+    <item
+        android:drawable="@drawable/launcher1"
+        android:duration="@integer/anim_frame_duration" />
+    <item
+        android:drawable="@drawable/launcher1"
+        android:duration="@integer/anim_frame_duration" />
+    <item
+        android:drawable="@drawable/launcher2"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher3"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher4"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher5"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher6"
+        android:duration="@integer/anim_frame_duration" />
+
+
+    <item
+        android:drawable="@drawable/launcher8"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher9"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher10"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher11"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher12"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher13"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher14"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher15"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher16"
+        android:duration="@integer/anim_frame_duration" />
+
+    <item
+        android:drawable="@drawable/launcher17"
+        android:duration="@integer/anim_frame_duration" />
+
+
+</animation-list>

@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.krepchenko.yourshoppinglist">
 
-    <uses-permission android:name="android.permission.READ_LOGS"/>
-
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -12,6 +10,11 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <activity
+            android:name=".ui.activity.SplashActivity"
             android:label="@string/application_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,14 +24,11 @@
             </intent-filter>
         </activity>
 
+
         <provider
             android:name="com.krepchenko.yourshoppinglist.db.GoodsContentProvider"
             android:authorities="com.krepchenko.yourshoppinglist.provider" />
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="5a0a84e9107c086e09ab1f4cfb472377174db38a" />
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

@@ -65,4 +65,6 @@
     <string name="alert_error_name_small">Длина имени не может быть меньше трех символов</string>
     <string name="dialog_fr_edit_category_title">Редактировать категорию</string>
     <string name="alert_dialog_del_category_title">Удалить категорию</string>
+    <string name="snackbar">Это так мило!</string>
+    <string name="application_name_splash">Ваш \nсписок покупок</string>
 </resources>

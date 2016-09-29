@@ -2,6 +2,7 @@
 <resources>
 
     <string name="application_name">Your Shopping List</string>
+    <string name="application_name_splash">Your \nShopping List</string>
     <string name="fragment_name_pop">Popular</string>
     <string name="fragment_name_pop_short"></string>
     <string name="fragment_name_all_goods">All goods</string>
@@ -53,7 +54,7 @@
     <string name="menu_item_delete_all">Clean all bought</string>
     <string name="action_menu_delete_all">Delete all</string>
     <string name="action_menu_send">Send</string>
-    <string name="action_menu_overflow">Menu overflow</string>
+    <string name="action_menu_overflow" translatable="false">Menu overflow</string>
     <string name="action_menu_search">Search</string>
 
     <string name="send_my_list">Share My List</string>
@@ -68,7 +69,8 @@
     <string name="toast_list_cleaned">Shopping list is clean</string>
     <string name="toast_item_add">\u0020 have added to MyList</string>
     <string name="toast_goodname_incorrect">Incorrect name. Input another</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="section_format" translatable="false">Hello World from section: %1$d</string>
+    <string name="snackbar">You are so pretty!</string>
 </resources>
