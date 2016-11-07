@@ -294,6 +294,7 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
 
     @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        ((MainActivity)getActivity()).getFam().collapse();
         if (actionMode != null) {
             Log.i("Click", "action mode active, child: child " + childPosition + " group " + groupPosition);
             checkSelectedId(groupPosition, childPosition);
@@ -333,6 +334,7 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
 
     @Override
     public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+        ((MainActivity)getActivity()).getFam().collapse();
         if (actionMode != null) {
             Log.i("Click", "action mode active, group: group " + groupPosition);
             checkSelectedId(groupPosition, -1);
@@ -350,6 +352,7 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        ((MainActivity)getActivity()).getFam().collapse();
         final int lastItem = firstVisibleItem + visibleItemCount;
         if(lastItem == totalItemCount && totalItemCount>visibleItemCount) {
             ((MainActivity)getActivity()).hideFam();

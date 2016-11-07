@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSnackBar(v, getString(R.string.snackbar) +" " + getEmojiByUnicode(128513), null);
+                setSnackBar(v, getString(R.string.snackbar) + " " + getEmojiByUnicode(128513), null);
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
@@ -495,9 +495,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             break;
-            case ADD_CATEGORY:
-
-            {
+            case ADD_CATEGORY: {
                 alertDialog.setTitle(R.string.alert_dialog_add_category_title);
                 alertDialog.setMessage(R.string.alert_dialog_add_category_mess);
                 alertDialog.setView(view_et);
@@ -549,9 +547,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             break;
-            case SET_NUMBER:
-
-            {
+            case SET_NUMBER: {
                 alertDialog.setTitle(R.string.dialog_fr_set_number_title);
                 nPicker.setMaxValue(99);
                 nPicker.setMinValue(1);
@@ -724,5 +720,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
+    public FloatingActionsMenu getFam() {
+        return fam;
+    }
 }
