@@ -34,6 +34,8 @@ import java.util.Locale;
  */
 public class MyListFragment extends BaseFragment implements AbsListView.OnScrollListener {
 
+    private static final int LOADER_ID = 0;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,15 +82,22 @@ public class MyListFragment extends BaseFragment implements AbsListView.OnScroll
         super.onViewCreated(view, savedInstanceState);
         setEmptyText(R.string.empty_fragment_my_list);
         listView.setAdapter(adapter);
-        listView.setOnScrollListener(this);
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(LOADER_ID, Bundle.EMPTY, this);
     }
+
+
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri uri = Uri.withAppendedPath(GoodsEntity.CONTENT_URI, UriSegment.my_list.toString());
         return new CursorLoader(getActivity(), uri, null, null, null, GoodsEntity.NAME
                 + " COLLATE LOCALIZED ASC");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(LOADER_ID,Bundle.EMPTY,this);
     }
 
     @Override
@@ -129,10 +138,12 @@ public class MyListFragment extends BaseFragment implements AbsListView.OnScroll
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         final int lastItem = firstVisibleItem + visibleItemCount;
-        if(lastItem == totalItemCount && totalItemCount>visibleItemCount) {
-            ((MainActivity)getActivity()).hideFam();
-        }else{
-            ((MainActivity)getActivity()).showFam();
+        if(getActivity()!=null) {
+            if (lastItem == totalItemCount && totalItemCount > visibleItemCount) {
+                ((MainActivity) getActivity()).hideFam();
+            } else {
+                ((MainActivity) getActivity()).showFam();
+            }
         }
     }
 

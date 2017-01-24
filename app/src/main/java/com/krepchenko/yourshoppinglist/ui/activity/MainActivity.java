@@ -24,7 +24,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -96,7 +98,12 @@ public class MainActivity extends AppCompatActivity
         fabSendList.setOnClickListener(this);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, 0, 0);
+                this, drawer, toolbar, 0, 0) {
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                TextUtils.hideKeyboard(MainActivity.this);
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -110,6 +117,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextUtils.hideKeyboard(MainActivity.this);
+            }
+        });
         if (savedInstanceState != null) {
             selectDrawerItem(navigationView.getMenu().getItem(savedInstanceState.getInt(KEY_ITEM)));
             if (savedInstanceState.containsKey(KEY_ALERT)) {
@@ -205,6 +218,7 @@ public class MainActivity extends AppCompatActivity
             fragmentClass = AllGoodsFragment.class;
             Log.i("Drawer", fragmentClass.getName());
         } else if (id == R.id.nav_popular) {
+            selectedItem = 2;
             Log.i("Fam", "gone");
             fam.setVisibility(View.GONE);
             fam.setEnabled(false);
@@ -653,7 +667,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.fab_add_category:
                 Log.i("Click", "fab add category");
                 showAlert(ContextAlert.ADD_CATEGORY, 0, null, 0);
-                // addCategory();
                 break;
             case R.id.fab_clean_bought:
                 cleanBought();

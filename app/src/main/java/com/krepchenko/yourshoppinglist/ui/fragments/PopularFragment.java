@@ -34,13 +34,14 @@ import java.util.Locale;
  */
 public class PopularFragment extends BaseFragment {
 
+    private static final int LOADER_ID = 2;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new PopularGoodsCursorAdapter(getActivity());
         countScope();
         setHasOptionsMenu(true);
-        ((MainActivity)getActivity()).hideFam();
     }
 
     /*
@@ -87,8 +88,17 @@ public class PopularFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         setEmptyText(R.string.empty_fragment_popular);
         listView.setAdapter(adapter);
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(LOADER_ID, null, this);
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(LOADER_ID,Bundle.EMPTY,this);
+        ((MainActivity)getActivity()).hideFam();
+    }
+
 
     private int query(String pathSegment, String columnSuffix) {
         int result = 0;

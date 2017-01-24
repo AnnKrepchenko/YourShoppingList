@@ -135,7 +135,7 @@ public abstract class BaseFragment extends Fragment implements LoaderManager.Loa
         switch (v.getId()){
             case R.id.empty_iv:
                 Log.i("Click", "empty cat");
-                setSnackBar(v,"Meow",null);
+                setSnackBar(v,"Meow ^_^",null);
                 break;
         }
     }

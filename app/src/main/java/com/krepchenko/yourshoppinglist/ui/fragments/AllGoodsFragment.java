@@ -50,6 +50,8 @@ import java.util.Locale;
  */
 public class AllGoodsFragment extends BaseFragment implements LoaderManager.LoaderCallbacks<Cursor>, ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener, AbsListView.OnScrollListener {
 
+    private static final int LOADER_ID = 1;
+
     private String mSearchText = "";
     private ActionMode actionMode;
     private ActionMode.Callback callback;
@@ -128,7 +130,7 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
     public void onViewCreated(View view, Bundle savedInstanceState) {
         listView = (ExpandableListView) view.findViewById(R.id.fragment_listview);
         listView.setAdapter(adapter);
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(LOADER_ID, null, this);
         listView.setOnChildClickListener(this);
         listView.setOnGroupClickListener(this);
         listView.setOnScrollListener(this);
@@ -138,7 +140,7 @@ public class AllGoodsFragment extends BaseFragment implements LoaderManager.Load
     @Override
     public void onResume() {
         super.onResume();
-        getLoaderManager().restartLoader(0, null, this);
+        getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
     @Override
